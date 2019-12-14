@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-
+import Title from "./Title"
 export default class Orders extends Component {
     render() {
         return (
             <div>
-                <h3>hello orders</h3>
+                <Title name="Current" title="Orders" />
             </div>
         )
     }

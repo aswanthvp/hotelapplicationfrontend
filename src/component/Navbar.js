@@ -4,14 +4,13 @@ export default class Navbar extends Component {
     render() {
         return (
            <nav className="navbar navbar-expand-sm bg-primary navbar-dark px-sm-2">
-            {/* <nav className="navbar navbar-light bg-light"> */}
                {/*https://img.icons8.com/nolan/64/000000/remittance-slip.png*/}
                <Link to='/'>
                    <img src="https://img.icons8.com/nolan/64/000000/remittance-slip.png" alt="Table" className="navbar-brand"/>
                </Link>
                <ul className="navbar-nav align-items-center">
                    <li className="nav-item ml-1">
-                       <Link to="/" className="nav-link">
+                       <Link to="/" className="nav-link nav-bar-app-name">
                            EasyBill
                        </Link>
                    </li>

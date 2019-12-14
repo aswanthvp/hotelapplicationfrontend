@@ -7,8 +7,22 @@
 }
 
 body{
-  
+  background-color:var(--mainWhite) !important; 
+  font-family: cursive !important;
+  color: var(--mainDark) !important;
+}
+.text-title-second{
+  color:var(--mainBlue) !important;
+}
+.nav-bar-app-name{
+  font-family: monospace;
+  font-size: -webkit-xxx-large;
+  font-style: italic;
+  font-weight: bold;
+  font-variant-caps: small-caps;
 }
 .nav-bar-item{
   padding:1rem !important;
+  font-family: cursive;
+  font-size: x-large;
 }
