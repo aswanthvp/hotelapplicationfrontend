@@ -3,16 +3,20 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
+  /* margin-block-start: 1.28em; */
+  margin-right: 2rem;
+  margin-left: 1rem;
+  float: left;
 }
 
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -20,3 +24,45 @@
 .App-link {
   color: #09d3ac;
 }
+
+.app-name{
+  color: lightslategrey;
+  font-style: italic;
+  float: left;
+  margin-bottom: 2px;
+  margin-top: 0px;
+}
+
+
+.main{
+  /* clear: both;  */
+  float:right;
+  width:75%;
+  
+}
+
+#mainContent{
+  clear: both;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #88decc33;
+}
+
+.tablink {
+  background-color: #555;
+  color: white;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /* padding: 0px 20px; */
+  font-size: 17px;
+  width: 30%;
+  margin-top:5px;
+  /* border-radius: 10px; */
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
