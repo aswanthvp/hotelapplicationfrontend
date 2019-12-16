@@ -26,3 +26,11 @@ body{
   font-family: cursive;
   font-size: x-large;
 }
+
+
+.product_avalable{
+  color: green;
+}
+.product_non_avalable{
+  color: red;
+}

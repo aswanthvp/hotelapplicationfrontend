@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './component/Navbar';
 import TableList from './component/table/TableList';
 import Orders from './component/Orders';
-import Product from './component/Product'
+import Product from './component/product/Product'
 import Default from './component/Default'
 
 
