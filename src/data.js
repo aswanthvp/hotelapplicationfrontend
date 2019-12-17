@@ -24,3 +24,7 @@ export const productlist =[
         available:true
     }
 ]
+
+export const modalProduct = {
+    
+}

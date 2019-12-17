@@ -27,10 +27,31 @@ body{
   font-size: x-large;
 }
 
-
+.product_window{
+  background-color: var(--lightBlue);
+  border-radius: 5px;
+  padding: 15px
+}
 .product_avalable{
   color: green;
 }
 .product_non_avalable{
   color: red;
+}
+.add_product{
+  font-size: 1.4rem;
+  color:var(--mainBlue)
+}
+
+.add_product:hover {
+  color: var(--lightBlue)
+}
+
+.product_modal{
+  background-color: honeydew !important;
+  border-radius: 15px;
+}
+.product_button{
+  margin:5px;
+  border-radius: 5px;
 }

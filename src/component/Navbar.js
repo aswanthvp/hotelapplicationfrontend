@@ -25,7 +25,7 @@ export default class Navbar extends Component {
                             <i className="nav-item nav-link nav-bar-item" >Orders </i>
                         </Link>
                         <Link to="/product">
-                            <i className="nav-item nav-link nav-bar-item" >Product </i>
+                            <i className="nav-item nav-link nav-bar-item" >Food </i>
                         </Link>
                     </div>
                 </div>

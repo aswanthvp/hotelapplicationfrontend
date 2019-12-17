@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { productlist }  from './data'
+import { productlist , modalProduct }  from './data'
 
 const FoodContext = React.createContext();
 //Provide
@@ -9,7 +9,11 @@ const FoodContext = React.createContext();
 
 class FoodProvider extends Component {
     state = {
-        productlist : productlist
+        productlist : productlist,
+        modalProductOpen : false,
+        modalProduct : modalProduct,
+        foodName : "",
+        foodPrice : ""
     }
     handleProductAvailability = (id) => {
         let tempProductList = [...this.state.productlist];
@@ -25,12 +29,71 @@ class FoodProvider extends Component {
             };
         });
     }
+
+    closeProductModal = () => {
+        this.setState(() => {
+            return { modalProductOpen: false };
+        });
+    };
+
+    productOpenModal = id => {
+        const product = this.getItem(id);
+        this.setState(() => {
+            product.edit = true
+          return { modalProduct: product, modalProductOpen: true };
+        });
+    };
+
+    productOpenModalAdd = () => {
+        this.setState(() => {
+          return { modalProduct: {id:"sdas", product:"", price:"", available:true, edit:false}, modalProductOpen: true };
+        });
+    };
+
+    updateProduct = (id, food, price) => {
+        let tempCart = [...this.state.productlist];
+        const selectedProduct = tempCart.find(item => {
+        return item.id === id;
+        });
+        const index = tempCart.indexOf(selectedProduct);
+        const product = tempCart[index];
+        product.product = food;
+        product.price = price;
+        this.setState(() => {
+            return {
+                 productlist: [...tempCart] , modalProductOpen: false  
+            };
+        });
+    }
+
+    addProduct = ( food, price) => {
+        let tempFood = {id:5,product:food,price:price,available:true}
+        let tempCart = [...this.state.productlist];
+        console.log(this.state.productlist)
+        tempCart.push(tempFood);
+        this.setState(() => {
+            return {
+                 productlist: tempCart , modalProductOpen: false  
+            };
+        });
+    }
+
+    getItem = id => {
+        const product = this.state.productlist.find(item => item.id === id);
+        return product;
+    };
+
     render() {
         return (
             <FoodContext.Provider value={ 
                     {
                         ...this.state ,
-                        handleProductAvailability:this.handleProductAvailability
+                        handleProductAvailability : this.handleProductAvailability,
+                        productOpenModal : this.productOpenModal,
+                        productOpenModalAdd : this.productOpenModalAdd,
+                        closeProductModal : this.closeProductModal,
+                        updateProduct : this.updateProduct,
+                        addProduct : this.addProduct
                     } 
                 }>
                 {this.props.children}
