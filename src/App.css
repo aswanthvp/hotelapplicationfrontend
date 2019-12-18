@@ -1,6 +1,6 @@
 :root{
   --mainBlue:#2a2a72;
-  --lightBlue:#809ffd;
+  --lightBlue:#e1e3e8;
   --mainWhite:#f3f3f3;
   --mainDark:#232528;
   --mainYellow:#ffa400;
@@ -54,4 +54,32 @@ body{
 .product_button{
   margin:5px;
   border-radius: 5px;
+}
+
+.product_category{
+  /* margin-left:5px; */
+  padding: 2rem !important;
+  border-right : 1px solid #b1aaaa;
+}
+.product_category_button{
+  margin:5px;
+  border-radius:5px;
+  padding:8px;
+}
+.product_category_add{
+  background-color: var(--lightBlue);
+  padding:1rem;
+}
+.product_category_delete{
+  color:#dc4040;
+}
+
+.float_left{
+  float: left;
+}
+.float_right{
+  float: right;
+}
+.float_none{
+  clear: both;
 }

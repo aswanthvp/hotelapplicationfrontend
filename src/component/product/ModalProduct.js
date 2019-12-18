@@ -9,10 +9,19 @@ export default class ModalProduct extends Component {
     {
       super(props);
       this.state = {
-          foodName: '',foodPrice:""
+          foodName: '',
+          foodPrice:"",
+          foodCategory:""
         };
     }
-  
+    
+    updateCategory = (event) => {
+        let category = event.target.value;
+        console.log(category)
+        this.setState(()=>{
+            return{foodCategory:category}
+        })
+    }
     render() {
         return (
             <FoodConsumer>
@@ -32,6 +41,18 @@ export default class ModalProduct extends Component {
                                         >
                                         <h5>{edit ? "Food Edit" :"Add Food"}</h5>
                                         <p className="text-muted">Food: <input id="foodName"   type="text" defaultValue = { product } ref={(c) => this.foodName = c}/></p>
+                                        <p className="text-muted">Category: 
+                                            <select onChange={(e)=>
+                                                {
+                                                   this.updateCategory(e); 
+                                                }
+                                            }>
+                                                {value.foodCategory.map((item)=>{
+                                                        return <option value={item} key={item}>{item}</option>
+                                                })
+                                                }
+                                            </select>
+                                        </p>
                                         <p className="text-muted">Price: <input id="foodPrice"  type="text" defaultValue = { price } ref={(c) => this.foodPrice = c}/></p>
 
                                         <Link to="/product">
@@ -46,14 +67,15 @@ export default class ModalProduct extends Component {
                                             {edit ? 
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        updateProduct(id, this.foodName.value,this.foodPrice.value)
+                                                        updateProduct(id, this.foodName.value,this.foodPrice.value,this.foodCategory)
                                                     }}>
                                                     Update
                                                 </button>
                                             :
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        addProduct(this.foodName.value,this.foodPrice.value)
+                                                        console.log(this.state)
+                                                        addProduct(this.foodName.value,this.foodPrice.value, this.state.foodCategory)
                                                     }}>
                                                     Add
                                                 </button>

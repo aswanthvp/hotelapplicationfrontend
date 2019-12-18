@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { productlist , modalProduct }  from './data'
+import { productlist , modalProduct, foodCategory }  from './data'
 
 const FoodContext = React.createContext();
 //Provide
@@ -13,8 +13,12 @@ class FoodProvider extends Component {
         modalProductOpen : false,
         modalProduct : modalProduct,
         foodName : "",
-        foodPrice : ""
+        foodPrice : "",
+        foodCategory : foodCategory,
+        foodCategoryDisplay : "All",
+        deleteCategory : false
     }
+
     handleProductAvailability = (id) => {
         let tempProductList = [...this.state.productlist];
         const selectedProduct = tempProductList.find(item => {
@@ -50,7 +54,54 @@ class FoodProvider extends Component {
         });
     };
 
-    updateProduct = (id, food, price) => {
+    productCategoryEdit = () =>{
+        let temp;
+        if(this.state.deleteCategory){
+            temp = false;
+        }else{
+            temp = true;
+        }
+        this.setState(() =>{
+            return{deleteCategory:temp}
+        })
+    }
+
+    productCategoryAdd = (category) => {
+        let temp = [...this.state.foodCategory];
+        temp.push(category);
+        temp = [...new Set(temp)];
+        console.log(temp)
+        this.setState(()=>{
+            return {foodCategory:temp}
+        })
+    }
+
+    productCategoryDelete = (category) => {
+        if(category === "All"){
+            alert("Cant delet All")
+            return null
+        }else{
+
+            let temp = [...this.state.foodCategory]
+            let tempNew = [];
+            temp.forEach((item)=>{
+                if (item !== category){
+                    tempNew.push(item)
+                }
+            });
+            this.setState(()=>{
+                return {foodCategory:tempNew}
+            })
+        }
+    }
+
+    updatefoodCategoryDisplay = (foodCategory) => {
+        this.setState(()=>{
+            return {foodCategoryDisplay:foodCategory}
+        })
+    }
+
+    updateProduct = (id, food, price,category) => {
         let tempCart = [...this.state.productlist];
         const selectedProduct = tempCart.find(item => {
         return item.id === id;
@@ -59,6 +110,7 @@ class FoodProvider extends Component {
         const product = tempCart[index];
         product.product = food;
         product.price = price;
+        product.category = category;
         this.setState(() => {
             return {
                  productlist: [...tempCart] , modalProductOpen: false  
@@ -66,11 +118,13 @@ class FoodProvider extends Component {
         });
     }
 
-    addProduct = ( food, price) => {
-        let tempFood = {id:5,product:food,price:price,available:true}
+    addProduct = ( food, price ,category) => {
+        console.log(category)
+        let tempFood = {id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
         let tempCart = [...this.state.productlist];
         console.log(this.state.productlist)
         tempCart.push(tempFood);
+        console.log(tempCart)
         this.setState(() => {
             return {
                  productlist: tempCart , modalProductOpen: false  
@@ -93,7 +147,11 @@ class FoodProvider extends Component {
                         productOpenModalAdd : this.productOpenModalAdd,
                         closeProductModal : this.closeProductModal,
                         updateProduct : this.updateProduct,
-                        addProduct : this.addProduct
+                        addProduct : this.addProduct,
+                        productCategoryEdit : this.productCategoryEdit,
+                        productCategoryDelete : this.productCategoryDelete,
+                        productCategoryAdd : this.productCategoryAdd,
+                        updatefoodCategoryDisplay : this.updatefoodCategoryDisplay
                     } 
                 }>
                 {this.props.children}
