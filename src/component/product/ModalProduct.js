@@ -48,7 +48,10 @@ export default class ModalProduct extends Component {
                                                 }
                                             }>
                                                 {value.foodCategory.map((item)=>{
-                                                        return <option value={item} key={item}>{item}</option>
+                                                        if(item !== "All")
+                                                            return <option value={item} key={item}>{item}</option>
+                                                        else
+                                                            return null
                                                 })
                                                 }
                                             </select>

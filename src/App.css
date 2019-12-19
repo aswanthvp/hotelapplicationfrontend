@@ -30,7 +30,9 @@ body{
 .product_window{
   background-color: var(--lightBlue);
   border-radius: 5px;
-  padding: 15px
+  padding: 15px;
+  margin-left: 1rem;
+  border : 1px solid #b1aaaa;
 }
 .product_avalable{
   color: green;
@@ -82,4 +84,13 @@ body{
 }
 .float_none{
   clear: both;
+}
+
+.product_menu_selected{
+  background-color: #a6a6d6;
+  border-radius: 15px;
+  padding-left: 12px;
+  padding-right: 12px;;
+  margin-left: 15px;
+  margin-bottom: 5px;
 }

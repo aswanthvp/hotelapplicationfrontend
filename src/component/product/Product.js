@@ -17,8 +17,8 @@ export default class Product extends Component {
                                     <ProductCategory value = {value}></ProductCategory>
                                     <div className="col-8">
                                         <div className="row">
-                                            <div className="col-2">{value.foodCategoryDisplay} Menu  </div>
-                                            <div className="col-8 mx-auto">
+                                            <div className="product_menu_selected">{value.foodCategoryDisplay} Menu  </div>
+                                            <div className="col-2 mx-auto">
                                                 <p>{}</p>
                                             </div>
                                             <div className="col-2 ml-auto ">
@@ -34,15 +34,38 @@ export default class Product extends Component {
                                                         {
                                                             value.foodCategoryDisplay === "All"?
                                                                 (
-                                                                    value.productlist.map((product) => {
-                                                                        return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>                                
-                                                                    })
+                                                                    // value.productlist.map((product) => {
+                                                                    //     return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>                                
+                                                                    // })
+                                                                    (value.productlist.length>0?
+                                                                        (
+                                                                            value.productlist.map((product) => {
+                                                                             return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>                                
+                                                                            })
+                                                                        ):(
+                                                                            <p>No Food Available Here.<br/>Add Food to the category to display here</p>
+                                                                        )
+                                                                    )
                                                                 ):(
-                                                                   value.productlist.filter((product) =>{
-                                                                       return product.category === value.foodCategoryDisplay;
-                                                                   }).map((product)=>{
-                                                                        return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>
-                                                                   })
+                                                                //    value.productlist.filter((product) =>{
+                                                                //        return product.category === value.foodCategoryDisplay;
+                                                                //    }).map((product)=>{
+                                                                //         return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>
+                                                                //    })
+                                                                        (value.productlist.filter((product) =>{
+                                                                            return product.category === value.foodCategoryDisplay
+                                                                        }).length>0?
+                                                                            (
+                                                                                value.productlist.filter((product) =>{
+                                                                                    return product.category === value.foodCategoryDisplay;
+                                                                                }).map((product)=>{
+                                                                                    return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>
+                                                                                })
+                                                                            ):(
+                                                                                <p>No Food Available Here.<br/>Add Food to the category to display here</p>
+                                                                                 
+                                                                            )
+                                                                        )
                                                                 )
                                                         }
                                             </div>
