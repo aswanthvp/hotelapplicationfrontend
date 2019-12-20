@@ -9,25 +9,28 @@ export default class ModalProduct extends Component {
     {
       super(props);
       this.state = {
-          foodName: '',
-          foodPrice:"",
+        //   foodName: '',
+        //   foodPrice:"",
           foodCategory:""
         };
     }
     
     updateCategory = (event) => {
         let category = event.target.value;
-        console.log(category)
+        document.getElementById("selectCategory").classList.remove("warning");   
         this.setState(()=>{
             return{foodCategory:category}
         })
+    }
+    updateFoodName = (foodname) =>{
+        alert(foodname);
     }
     render() {
         return (
             <FoodConsumer>
                 {value =>{
                     const { modalProductOpen, closeProductModal, updateProduct, addProduct } = value;
-                    const { id, product, price, edit } = value.modalProduct;
+                    const { id, product, price, edit ,category} = value.modalProduct;
                     if(!modalProductOpen){
                         return null
                     }else{
@@ -42,16 +45,17 @@ export default class ModalProduct extends Component {
                                         <h5>{edit ? "Food Edit" :"Add Food"}</h5>
                                         <p className="text-muted">Food: <input id="foodName"   type="text" defaultValue = { product } ref={(c) => this.foodName = c}/></p>
                                         <p className="text-muted">Category: 
-                                            <select onChange={(e)=>
+                                            <select id="selectCategory" defaultValue={edit?category:'DEFAULT'} onChange={(e)=>
                                                 {
                                                    this.updateCategory(e); 
                                                 }
                                             }>
+                                                
                                                 {value.foodCategory.map((item)=>{
                                                         if(item !== "All")
                                                             return <option value={item} key={item}>{item}</option>
                                                         else
-                                                            return null
+                                                            return <option  value="DEFAULT" disabled key={item}>Select the category</option>
                                                 })
                                                 }
                                             </select>

@@ -67,13 +67,20 @@ class FoodProvider extends Component {
     }
 
     productCategoryAdd = (category) => {
-        let temp = [...this.state.foodCategory];
-        temp.push(category);
-        temp = [...new Set(temp)];
-        console.log(temp)
-        this.setState(()=>{
-            return {foodCategory:temp}
-        })
+        if(category === ""){
+            
+            document.getElementById("foodCategory").classList.add("warning");
+        }else{
+            document.getElementById("foodCategory").classList.remove("warning");
+            let temp = [...this.state.foodCategory];
+            temp.push(category);
+            temp = [...new Set(temp)];
+            console.log(temp)
+            this.setState(()=>{
+                return {foodCategory:temp}
+            });
+            document.getElementById("foodCategory").value = "";
+        }
     }
 
     productCategoryDelete = (category) => {
@@ -120,16 +127,35 @@ class FoodProvider extends Component {
 
     addProduct = ( food, price ,category) => {
         console.log(category)
-        let tempFood = {id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
-        let tempCart = [...this.state.productlist];
-        console.log(this.state.productlist)
-        tempCart.push(tempFood);
-        console.log(tempCart)
-        this.setState(() => {
-            return {
-                 productlist: tempCart , modalProductOpen: false  
-            };
-        });
+        if(food === ""){
+            console.log("please enter food name");
+            document.getElementById("foodName").classList.add("warning");
+        }
+        else if(category === ""){
+            console.log("please select the category");
+            document.getElementById("selectCategory").classList.add("warning");
+            document.getElementById("foodName").classList.remove("warning");
+        }
+        else if(price === "" || isNaN(price)){
+            console.log("please enter the food price");
+            document.getElementById("foodName").classList.remove("warning");
+            document.getElementById("foodPrice").classList.add("warning");
+        }
+        else{
+
+            document.getElementById("foodName").classList.remove("warning");
+            document.getElementById("foodPrice").classList.remove("warning");
+            let tempFood = {id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
+            let tempCart = [...this.state.productlist];
+            console.log(this.state.productlist)
+            tempCart.push(tempFood);
+            console.log(tempCart)
+            this.setState(() => {
+                return {
+                    productlist: tempCart , modalProductOpen: false  
+                };
+            });
+        }
     }
 
     getItem = id => {
