@@ -15,8 +15,8 @@ export default class Product extends Component {
                             <div>
                                 <div className="row">
                                     <ProductCategory value = {value}></ProductCategory>
-                                    <div className="col-8">
-                                        <div className="row">
+                                    <div className="col-12 mx-auto col-md-4 col-lg-7 my-3">
+                                        <div className="row container">
                                             <div className="product_menu_selected">{value.foodCategoryDisplay} Menu  </div>
                                             <div className="col-2 mx-auto">
                                                 <p>{}</p>
@@ -29,8 +29,8 @@ export default class Product extends Component {
                                                 </div>
                                             </div>      
                                         </div>                                          
-                                        <div className="row">
-                                            <div className="product_window col-10 mr-auto">
+                                        <div className="row container margin_auto">
+                                            <div className="product_window col-12 ">
                                                         {
                                                             value.foodCategoryDisplay === "All"?
                                                                 (
