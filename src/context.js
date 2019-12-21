@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { productlist , modalProduct, foodCategory }  from './data'
+import { productlist , modalProduct, foodCategory, tableList, tableOrder }  from './data'
 
 const FoodContext = React.createContext();
 //Provide
@@ -16,7 +16,10 @@ class FoodProvider extends Component {
         foodPrice : "",
         foodCategory : foodCategory,
         foodCategoryDisplay : "All",
-        deleteCategory : false
+        deleteCategory : false,
+        tableList : tableList,
+        tableOrder : tableOrder,
+        modalTableOpen : false
     }
 
     handleProductAvailability = (id) => {

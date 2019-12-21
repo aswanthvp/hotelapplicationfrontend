@@ -99,3 +99,8 @@ body{
   margin-left: 15px;
   margin-bottom: 5px;
 }
+
+
+.card-footer{
+  padding: 0rem 0re !important;
+}
