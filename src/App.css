@@ -11,6 +11,7 @@ body{
   font-family: cursive !important;
   color: var(--mainDark) !important;
 }
+
 .text-title-second{
   color:var(--mainBlue) !important;
 }

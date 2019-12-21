@@ -46,8 +46,8 @@ export default class Table extends Component {
                     </FoodConsumer>
                     <div className="card-footer">
                         {occupied?
-                          <button className="align-self-center button button_occupied">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></button>:
-                          <button className="align-self-center button button_available">Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>
+                          <a className="align-self-center button button_occupied">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></a>:
+                          <a className="align-self-center button button_available">Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></a>
                           
                         }
                         
@@ -116,6 +116,7 @@ const TableWrapper = styled.div`
   }
   .button{
     width: -webkit-fill-available;
+    cursor: grab;
     border: none;
     text-align: center;
     text-decoration: none;
