@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from "styled-components";
 import { FoodConsumer } from "../../context";
+import { Link } from 'react-router-dom';
 
 export default class Table extends Component {
     render() {
@@ -12,46 +13,35 @@ export default class Table extends Component {
                     <FoodConsumer>
                         {value => {
                         return (
+                          <div>
                             <div className="img-container p-4 align-self-center">
                                 <p className="align-self-center text-color">{table}</p>
-                                <img src='table.jpeg' alt="" className="card-img-top" />
+                                {
+                                  occupied?
+                                    <div onClick={()=>{
+                                        value.tableContentItem(id)
+                                      }}>
+                                      <Link to="/tablecontent">
+                                        <img src='table.jpeg' alt="" className="card-img-top" />
+                                      </Link>
+                                    </div>:
+                                   <img src='table.jpeg' alt="" className="card-img-top" />
+                                }
+                               
                             </div>
-                            // <div
-                            // className="img-container p-5"
-                            // onClick={() => value.handleDetail(id)}
-                            // >
-                            // <Link to="/details">
-                            //     <img src={img} alt="" className="card-img-top" />
-                            // </Link>
-                            // <button
-                            //     className="cart-btn"
-                            //     disabled={inCart ? true : false}
-                            //     onClick={() => {
-                            //     value.addToCart(id);
-                            //     value.openModal(id);
-                            //     }}
-                            // >
-                            //     {inCart ? (
-                            //     <p className="text-capitalize mb-0" disabled>
-                            //         in cart
-                            //     </p>
-                            //     ) : (
-                            //     <i className="fas fa-cart-plus" />
-                            //     )}
-                            // </button>
-                            // </div>
-                            // <p>aksb</p>
+                            <div className="card-footer">
+                                {occupied?
+                                  <a className="align-self-center button button_occupied">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></a>:
+                                  <a className="align-self-center button button_available" onClick={()=>value.tableTake(id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></a>   
+                                }
+                            </div>
+                          </div>
                         );
+                       
                         }}
-                    </FoodConsumer>
-                    <div className="card-footer">
-                        {occupied?
-                          <a className="align-self-center button button_occupied">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></a>:
-                          <a className="align-self-center button button_available">Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></a>
-                          
-                        }
                         
-                    </div>
+                    </FoodConsumer>
+                   
                 </div>
             </TableWrapper>
         )

@@ -19,7 +19,7 @@ class FoodProvider extends Component {
         deleteCategory : false,
         tableList : tableList,
         tableOrder : tableOrder,
-        modalTableOpen : false
+        tableItem : {}
     }
 
     handleProductAvailability = (id) => {
@@ -166,6 +166,33 @@ class FoodProvider extends Component {
         return product;
     };
 
+    tableContentItem = (id) => {
+        const tableitem = this.state.tableOrder.find(item =>item.id === id);
+        console.log(tableitem);
+        this.setState(() =>{
+            return{
+                tableItem : tableitem
+            }
+        });
+    }
+
+    tableTake = id => {
+        let tables = [...this.state.tableList];
+        let tabletake = tables.find((item) =>item.id === id);
+        const index = tables.indexOf(tabletake);
+        const table = tables[index];
+        table.occupied = true;
+        let tableorders = [...this.state.tableOrder];
+        let tablenew = {id:id,table:table.table,order:{}}
+        tableorders.push(tablenew);
+        this.setState(() =>{
+            return{
+                tableList : [...tables],
+                tableOrder : tableorders
+            }
+        })
+    }
+
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -180,7 +207,9 @@ class FoodProvider extends Component {
                         productCategoryEdit : this.productCategoryEdit,
                         productCategoryDelete : this.productCategoryDelete,
                         productCategoryAdd : this.productCategoryAdd,
-                        updatefoodCategoryDisplay : this.updatefoodCategoryDisplay
+                        updatefoodCategoryDisplay : this.updatefoodCategoryDisplay,
+                        tableContentItem : this.tableContentItem,
+                        tableTake : this.tableTake
                     } 
                 }>
                 {this.props.children}
