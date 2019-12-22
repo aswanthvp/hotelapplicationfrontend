@@ -11,7 +11,14 @@ body{
   font-family: fantasy!important;
   color: var(--mainDark) !important;
 }
-
+p,select,h6,button{
+  font-family: cursive!important;
+}
+.button_add_category{
+  background-color: #2bbbad !important ;
+  color: aliceblue !important ;
+  align-self: center;
+}
 .text-title-second{
   color:var(--mainBlue) !important;
 }
@@ -27,7 +34,10 @@ body{
   font-family: cursive;
   font-size: x-large;
 }
-
+.maincontainer{
+  border : 1px solid #b1aaaa;
+  border-radius: 5px;
+}
 .product_window{
   background-color: var(--lightBlue);
   border-radius: 5px;

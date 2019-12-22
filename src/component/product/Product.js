@@ -34,9 +34,6 @@ export default class Product extends Component {
                                                         {
                                                             value.foodCategoryDisplay === "All"?
                                                                 (
-                                                                    // value.productlist.map((product) => {
-                                                                    //     return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>                                
-                                                                    // })
                                                                     (value.productlist.length>0?
                                                                         (
                                                                             value.productlist.map((product) => {
@@ -47,11 +44,6 @@ export default class Product extends Component {
                                                                         )
                                                                     )
                                                                 ):(
-                                                                //    value.productlist.filter((product) =>{
-                                                                //        return product.category === value.foodCategoryDisplay;
-                                                                //    }).map((product)=>{
-                                                                //         return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>
-                                                                //    })
                                                                         (value.productlist.filter((product) =>{
                                                                             return product.category === value.foodCategoryDisplay
                                                                         }).length>0?

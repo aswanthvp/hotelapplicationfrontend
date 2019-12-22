@@ -31,8 +31,8 @@ export default class Table extends Component {
                             </div>
                             <div className="card-footer">
                                 {occupied?
-                                  <a className="align-self-center button button_occupied">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></a>:
-                                  <a className="align-self-center button button_available" onClick={()=>value.tableTake(id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></a>   
+                                  <button className="align-self-center button button_occupied btn btn-default btn-sm">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></button>:
+                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
                                 }
                             </div>
                           </div>
@@ -116,7 +116,7 @@ const TableWrapper = styled.div`
     background-color:#ffffff!important;
   }
   .button_available{
-    background-color: #4CAF50;
+    background-color: #4CAF50;     
   }
   .button_arrow_color{
     color:#23f34f;

@@ -22,9 +22,6 @@ export default class ModalProduct extends Component {
             return{foodCategory:category}
         })
     }
-    updateFoodName = (foodname) =>{
-        alert(foodname);
-    }
     render() {
         return (
             <FoodConsumer>
