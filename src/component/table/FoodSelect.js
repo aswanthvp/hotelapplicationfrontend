@@ -23,7 +23,7 @@ export default class FoodSelect extends Component {
                  <h6 className="text-center">Add food to the table</h6>
                  
                  <center>
-                     <select defaultValue='DEFAULT' className="mr-4" onChange={(e)=>
+                     <select defaultValue='All' className="mr-4" onChange={(e)=>
                                                 {
                                                    this.updateCategory(e); 
                                                 } }>
@@ -31,7 +31,7 @@ export default class FoodSelect extends Component {
                             if(item !== "All")
                                 return <option className="text-capitalize" value={item} key={item}>{item}</option>
                             else
-                                return <option  value="DEFAULT" key={item}>All</option>
+                                return <option  value={item} key={item}>All</option>
                             })
                         }
                      </select>
