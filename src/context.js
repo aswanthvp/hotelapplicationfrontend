@@ -168,7 +168,6 @@ class FoodProvider extends Component {
 
     tableContentItem = (id) => {
         const tableitem = this.state.tableOrder.find(item =>item.id === id);
-        console.log(tableitem);
         this.setState(() =>{
             return{
                 tableItem : tableitem
@@ -183,7 +182,7 @@ class FoodProvider extends Component {
         const table = tables[index];
         table.occupied = true;
         let tableorders = [...this.state.tableOrder];
-        let tablenew = {id:id,table:table.table,order:{}}
+        let tablenew = {id:id,table:table.table,orders:[]};
         tableorders.push(tablenew);
         this.setState(() =>{
             return{
@@ -196,6 +195,7 @@ class FoodProvider extends Component {
 
     updateFoodSelected = (food) =>{
         var tableitem = this.state.tableItem;
+        console.log(tableitem)
         if(tableitem.hasOwnProperty("orders")){
             var orders = tableitem.orders;
             var foodcheck = orders.filter((item) => {
@@ -210,6 +210,7 @@ class FoodProvider extends Component {
                 foodcheck[0]["count"]++;
             }
             tableitem.orders = orders;
+            console.log(tableitem)
             this.setState(() =>{
                 return{
                     tableItem : tableitem
