@@ -6,7 +6,7 @@ export default class FoodSelect extends Component {
       super(props);
       this.state = {
           foodCategorySelect:"All",
-          tempFoodOrders :[]
+          foodSelected :""
         };
     }
     updateCategory = (event) => {
@@ -15,9 +15,17 @@ export default class FoodSelect extends Component {
             return{foodCategorySelect:category}
         })
     }
+    updateFoodSelected = (event) => {
+        let foodselectedtmp =  event.target.value;
+        console.log(foodselectedtmp)
+        this.setState(()=>{
+            return { foodSelected : foodselectedtmp }
+        })
+    }
     render() {
         const foods = this.props.value.productlist;
         const foodcategory = this.props.value.foodCategory;
+        const updateFoodSelected = this.props.value.updateFoodSelected;
         return (
             <div className="col-9 mx-auto col-md-4 col-lg-4 my-3 maincontainer py-4">
                  <h6 className="text-center">Add food to the table</h6>
@@ -35,20 +43,20 @@ export default class FoodSelect extends Component {
                             })
                         }
                      </select>
-                    <select  defaultValue='DEFAULT'>
+                    <select  defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
                         <option value='DEFAULT' disabled>Select the food</option>
                         {
                         foods.map((item)=>{
                             if(this.state.foodCategorySelect === "All"){
                                 if(item.available)
-                                return <option className="text-capitalize" key={item.id} value={item.id}>{item.product}</option>
+                                return <option className="text-capitalize" key={item.id} value={item.product}>{item.product}</option>
                                 else
-                                return <option className="text-capitalize" value={item.id} key={item.id} disabled>{item.product}</option>
+                                return <option className="text-capitalize" value={item.id} key={item.product} disabled>{item.product}</option>
                             }else if(item.category === this.state.foodCategorySelect){
                                 if(item.available)
-                                return <option className="text-capitalize" key={item.id} value={item.id}>{item.product}</option>
+                                return <option className="text-capitalize" key={item.id} value={item.product}>{item.product}</option>
                                 else
-                                return <option className="text-capitalize" value={item.id} key={item.id} disabled>{item.product}</option>
+                                return <option className="text-capitalize" value={item.id} key={item.product} disabled>{item.product}</option>
                             }else{
                                 return null
                             }
@@ -58,7 +66,7 @@ export default class FoodSelect extends Component {
                     </select>
                  </center>
                  <center>
-                    <button className="my-3 btn btn-default btn-sm button_add_category">Add the food</button>
+                    <button className="my-3 btn btn-default btn-sm button_add_category" onClick = {()=>{ updateFoodSelected(this.state.foodSelected) }}>Add the food</button>
                  </center>
                  
             </div>

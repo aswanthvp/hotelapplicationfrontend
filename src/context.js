@@ -193,6 +193,30 @@ class FoodProvider extends Component {
         })
     }
 
+
+    updateFoodSelected = (food) =>{
+        var tableitem = this.state.tableItem;
+        if(tableitem.hasOwnProperty("orders")){
+            var orders = tableitem.orders;
+            var foodcheck = orders.filter((item) => {
+                return item.item === food
+            })
+            if(foodcheck.length === 0){
+                orders.push({
+                    item : food,
+                    count : 1
+                })
+            }else{
+                foodcheck[0]["count"]++;
+            }
+            tableitem.orders = orders;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem
+                }
+            })
+        }
+    }
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -209,7 +233,8 @@ class FoodProvider extends Component {
                         productCategoryAdd : this.productCategoryAdd,
                         updatefoodCategoryDisplay : this.updatefoodCategoryDisplay,
                         tableContentItem : this.tableContentItem,
-                        tableTake : this.tableTake
+                        tableTake : this.tableTake,
+                        updateFoodSelected : this.updateFoodSelected
                     } 
                 }>
                 {this.props.children}

@@ -1,7 +1,7 @@
 export const productlist =[
     {
         id:1,
-        product:"rice",
+        product:"Rice",
         price:21,
         category:"Lunch",
         available:true
@@ -15,7 +15,7 @@ export const productlist =[
     },
     {
         id:3,
-        product:"curry",
+        product:"Curry",
         price:55,
         category:"Lunch",
         available:false
@@ -88,18 +88,26 @@ export const tableOrder = [
     {
         id:3,
         table:"Table-3",
-        orders:{
-            Juice:2,
-            rice:2
-        }
+        orders:[
+            {
+                item : "Juice",
+                count : 2
+            }
+        ]
     },
     {
         id:4,
         table:"Table-4",
-        orders:{
-            Juice:6,
-            rice:4
-        }
+        orders:[
+            {
+                item : "Juice",
+                count : 6
+            },
+            {
+                item : "Rice",
+                count : 2
+            }
+        ]
     }
 ]
 
