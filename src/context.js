@@ -239,10 +239,7 @@ class FoodProvider extends Component {
             })
         }else{
             alert("Food Not Available any more....")
-            // $.alert({
-            //     title: 'Alert!',
-            //     content: 'Food Not Available any more...',
-            // });
+            return  null
         }
     }
 
@@ -274,6 +271,27 @@ class FoodProvider extends Component {
             }
         })
     }
+
+    calTotal = () =>{
+        var tableitem = this.state.tableItem;
+        if(tableitem.hasOwnProperty("orders")){
+            var orders = tableitem.orders;
+            var productlist = [...this.state.productlist]
+            let total = 0;
+            const amount = orders.map((item) =>{
+                let temp = productlist.filter((item2) =>{
+                    return item2.product === item.item
+                })
+                return item.count * temp[0].price;
+            });
+            amount.forEach(element => {
+                total = total + element
+            });
+            return total
+        }else{
+            return 0
+        }
+    }
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -294,7 +312,8 @@ class FoodProvider extends Component {
                         updateFoodSelected : this.updateFoodSelected,
                         incrementFoodCount :this.incrementFoodCount,
                         decrementFoodCount : this.decrementFoodCount,
-                        removeFood : this.removeFood
+                        removeFood : this.removeFood,
+                        calTotal : this.calTotal
                     } 
                 }>
                 {this.props.children}
