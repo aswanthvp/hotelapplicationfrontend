@@ -194,28 +194,28 @@ class FoodProvider extends Component {
 
 
     updateFoodSelected = (food) =>{
-        var tableitem = this.state.tableItem;
-        console.log(tableitem)
-        if(tableitem.hasOwnProperty("orders")){
-            var orders = tableitem.orders;
-            var foodcheck = orders.filter((item) => {
-                return item.item === food
-            })
-            if(foodcheck.length === 0){
-                orders.push({
-                    item : food,
-                    count : 1
+        if(food !== ""){
+            var tableitem = this.state.tableItem;
+            if(tableitem.hasOwnProperty("orders")){
+                var orders = [...tableitem.orders];
+                var foodcheck = orders.filter((item) => {
+                    return item.item === food
                 })
-            }else{
-                foodcheck[0]["count"]++;
-            }
-            tableitem.orders = orders;
-            console.log(tableitem)
-            this.setState(() =>{
-                return{
-                    tableItem : tableitem
+                if(foodcheck.length === 0){
+                    orders.push({
+                        item : food,
+                        count : 1
+                    })
+                }else{
+                    foodcheck[0]["count"]++;
                 }
-            })
+                tableitem.orders = orders;
+                this.setState(() =>{
+                    return{
+                        tableItem : tableitem
+                    }
+                })
+            }
         }
     }
     render() {
