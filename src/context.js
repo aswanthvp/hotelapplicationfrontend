@@ -218,6 +218,62 @@ class FoodProvider extends Component {
             }
         }
     }
+
+    incrementFoodCount = (food) =>{
+        var tableitem = this.state.tableItem;
+        var productlist = [...this.state.productlist]
+        var foodavailability = productlist.filter((item) =>{
+            return item.product === food
+        })
+        if(foodavailability[0].available){
+            var orders = [...tableitem.orders];
+            var foodcheck = orders.filter((item) => {
+                return item.item === food
+            })
+            foodcheck[0]["count"]++;
+            tableitem.orders = orders;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem
+                }
+            })
+        }else{
+            alert("Food Not Available any more....")
+            // $.alert({
+            //     title: 'Alert!',
+            //     content: 'Food Not Available any more...',
+            // });
+        }
+    }
+
+    decrementFoodCount = (food) =>{
+        var tableitem = this.state.tableItem;
+        var orders = [...tableitem.orders];
+        var foodcheck = orders.filter((item) => {
+            return item.item === food
+        })
+        foodcheck[0]["count"]--;
+        tableitem.orders = orders;
+        this.setState(() =>{
+            return{
+                tableItem : tableitem
+            }
+        })
+    }
+
+    removeFood = (food) =>{
+        var tableitem = this.state.tableItem;
+        var orders = [...tableitem.orders];
+        var foodcheck = orders.filter((item) => {
+            return item.item !== food
+        })
+        tableitem.orders = foodcheck;
+        this.setState(() =>{
+            return{
+                tableItem : tableitem
+            }
+        })
+    }
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -235,7 +291,10 @@ class FoodProvider extends Component {
                         updatefoodCategoryDisplay : this.updatefoodCategoryDisplay,
                         tableContentItem : this.tableContentItem,
                         tableTake : this.tableTake,
-                        updateFoodSelected : this.updateFoodSelected
+                        updateFoodSelected : this.updateFoodSelected,
+                        incrementFoodCount :this.incrementFoodCount,
+                        decrementFoodCount : this.decrementFoodCount,
+                        removeFood : this.removeFood
                     } 
                 }>
                 {this.props.children}
