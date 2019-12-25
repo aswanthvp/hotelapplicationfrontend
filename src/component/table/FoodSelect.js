@@ -11,8 +11,9 @@ export default class FoodSelect extends Component {
     }
     updateCategory = (event) => {
         let category = event.target.value;
+        document.getElementById('foodselect').value="DEFAULT";
         this.setState(()=>{
-            return{foodCategorySelect:category}
+            return{foodCategorySelect:category,foodSelected:""}
         })
     }
     updateFoodSelected = (event) => {
@@ -43,7 +44,7 @@ export default class FoodSelect extends Component {
                             })
                         }
                      </select>
-                    <select  defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
+                    <select id="foodselect" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
                         <option value='DEFAULT' disabled>Select the food</option>
                         {
                         foods.map((item)=>{
