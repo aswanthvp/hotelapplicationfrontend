@@ -18,11 +18,11 @@ export default class OrdersList extends Component {
                                         return(
                                             <div className="card foodname_card" key = {item.item}>
                                                 <div className="row foodname_row">
-                                                    <div className="col-3 text-center text-capitalize">{item.item}</div>
-                                                    <div className="col-2 text-center text-capitalize">Rs.{productdetails[0].price}</div>
-                                                    <div className="col-4 text-center text-title-second">{(item.count===1)?<span className="itemcount mx-1 disabled">-</span>:<span className="itemcount mx-1" onClick = {()=>{value.decrementFoodCount(item.item)}}>-</span>}<span className="itemcount mx-1">{item.count}</span><span className="itemcount mx-1" onClick = {()=>{value.incrementFoodCount(item.item)}}>+</span></div>
-                                                    <div className="col-2 text-center text-capitalize">Rs.{productdetails[0].price * item.count}</div>
-                                                    <div className="col-1 text-center text-capitalize removefood fas fa-trash-alt" onClick={()=>{value.removeFood(item.item)}}></div>
+                                                    <div className="col-3 col-sm-3 col-xs-3 text-center text-capitalize foodlist">{item.item}</div>
+                                                    <div className="col-2 col-sm-2 col-xs-2 text-center text-capitalize foodlist">Rs.{productdetails[0].price}</div>
+                                                    <div className="col-4 col-sm-4 col-xs-4 text-center text-title-second foodlist">{(item.count===1)?<span className="itemcount mx-1 disabled">-</span>:<span className="itemcount mx-1" onClick = {()=>{value.decrementFoodCount(item.item)}}>-</span>}<span className="itemcount mx-1">{item.count}</span><span className="itemcount mx-1" onClick = {()=>{value.incrementFoodCount(item.item)}}>+</span></div>
+                                                    <div className="col-2 col-sm-2 col-xs-2 text-center text-capitalize foodlist">Rs.{productdetails[0].price * item.count}</div>
+                                                    <div className="col-1 col-sm-1 col-xs-2 text-center text-capitalize removefood fas fa-trash-alt foodlist" onClick={()=>{value.removeFood(item.item)}}></div>
                                                 </div>
                                             </div>  
                                         )

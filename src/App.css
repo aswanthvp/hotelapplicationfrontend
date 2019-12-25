@@ -147,6 +147,7 @@ p,select,h6,button{
 }
 .foodname_card{
   background-color: #5fb8ff !important;
+  padding-right: 10px !important;
 }
 
 .disabled{
@@ -155,6 +156,10 @@ p,select,h6,button{
   color:  #92968e !important;
 }
 
+.foodlist{
+  padding-left: 2px !important ;
+  padding-right: 2px !important;
+}
 .removefood{
   color: red;
 }
