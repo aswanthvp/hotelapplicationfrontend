@@ -4,7 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './component/Navbar';
 import TableList from './component/table/TableList';
-import Orders from './component/Orders';
+import Orders from './component/orders/Orders';
 import Product from './component/product/Product'
 import Default from './component/Default'
 import ModalProduct from "./component/product/ModalProduct";

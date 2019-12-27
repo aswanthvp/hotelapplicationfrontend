@@ -111,6 +111,21 @@ export const tableOrder = [
     }
 ]
 
-// export const modalTable = {
-    
-// }
+export const orderDetails = [
+    {
+        id : 1,
+        table : "Table-4",
+        food : "Juice",
+        count : 6,
+        status : "Placed"
+    },
+    {
+        id : 2,
+        table : "Table-4",
+        food : "Rice",
+        count : 2,
+        status : "Placed"
+    }
+]
+
+export const foodStatus = ["All","Placed","Cooking","Done"]

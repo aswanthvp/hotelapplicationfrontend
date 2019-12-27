@@ -162,4 +162,9 @@ p,select,h6,button{
 }
 .removefood{
   color: red;
+  cursor: pointer;
+}
+
+.test{
+  background-color :red !important;
 }
