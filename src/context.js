@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import { productlist , modalProduct, foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
 
 const FoodContext = React.createContext();
+
 //Provide
 //Consumer
 
@@ -23,6 +25,7 @@ class FoodProvider extends Component {
         orderDetails : orderDetails,
         foodStatus : foodStatus
     }
+
 
     handleProductAvailability = (id) => {
         let tempProductList = [...this.state.productlist];
@@ -198,6 +201,13 @@ class FoodProvider extends Component {
     updateFoodSelected = (food) =>{
         if(food !== ""){
             var tableitem = this.state.tableItem;
+            var orderslist = [...this.state.orderDetails];
+            // console.log(tableitem)
+            // console.log(orderslist)
+            // console.log(orderslist.length)
+            var id = orderslist.length + 1
+            var tablename = tableitem.table
+
             if(tableitem.hasOwnProperty("orders")){
                 var orders = [...tableitem.orders];
                 var foodcheck = orders.filter((item) => {
@@ -208,13 +218,38 @@ class FoodProvider extends Component {
                         item : food,
                         count : 1
                     })
+                    orderslist.push({
+                        id : id,
+                        table : tablename,
+                        food : food,
+                        count : 1,
+                        status : "Placed"
+                    })
                 }else{
                     foodcheck[0]["count"]++;
+                    var ordercheck = orderslist.find((item) =>{
+                        return item.food === food && item.table === tablename && item.status === "Placed"
+                    })
+                    if(ordercheck){
+                        const index = orderslist.indexOf(ordercheck);
+                        ordercheck.count = ordercheck.count + 1;
+                        orderslist[index] = ordercheck;
+                    }else{
+                        orderslist.push({
+                            id : id,
+                            table : tablename,
+                            food : food,
+                            count : 1,
+                            status : "Placed"
+                        })
+                    }
                 }
                 tableitem.orders = orders;
+                console.log(orderslist)
                 this.setState(() =>{
                     return{
-                        tableItem : tableitem
+                        tableItem : tableitem,
+                        orderDetails : orderslist
                     }
                 })
             }
@@ -224,6 +259,9 @@ class FoodProvider extends Component {
     incrementFoodCount = (food) =>{
         var tableitem = this.state.tableItem;
         var productlist = [...this.state.productlist]
+        var orderslist = [...this.state.orderDetails];
+        var tablename = tableitem.table;
+        var id = tableitem.id
         var foodavailability = productlist.filter((item) =>{
             return item.product === food
         })
@@ -233,10 +271,30 @@ class FoodProvider extends Component {
                 return item.item === food
             })
             foodcheck[0]["count"]++;
+
+            var ordercheck = orderslist.find((item) =>{
+                return item.food === food && item.table === tablename && item.status === "Placed"
+            })
+            if(ordercheck){
+                const index = orderslist.indexOf(ordercheck);
+                ordercheck.count = ordercheck.count + 1;
+                orderslist[index] = ordercheck;
+            }else{
+                orderslist.push({
+                    id : id,
+                    table : tablename,
+                    food : food,
+                    count : 1,
+                    status : "Placed"
+                })
+            }
+
+
             tableitem.orders = orders;
             this.setState(() =>{
                 return{
-                    tableItem : tableitem
+                    tableItem : tableitem,
+                    orderDetails : orderslist
                 }
             })
         }else{
@@ -248,28 +306,138 @@ class FoodProvider extends Component {
     decrementFoodCount = (food) =>{
         var tableitem = this.state.tableItem;
         var orders = [...tableitem.orders];
+        var orderslist = [...this.state.orderDetails];
+        var tablename = tableitem.table;
+
         var foodcheck = orders.filter((item) => {
             return item.item === food
         })
-        foodcheck[0]["count"]--;
-        tableitem.orders = orders;
-        this.setState(() =>{
-            return{
-                tableItem : tableitem
-            }
+        
+
+
+        var ordercheck = orderslist.find((item) =>{
+            return item.food === food && item.table === tablename && item.status === "Placed"
         })
+        if(ordercheck){
+            const index = orderslist.indexOf(ordercheck);
+           
+            if(ordercheck.count >1){
+                ordercheck.count = ordercheck.count - 1;
+                orderslist[index] = ordercheck;
+            }else{
+                orderslist.splice(index, 1) 
+            }
+            
+            foodcheck[0]["count"]--;
+            tableitem.orders = orders;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem,
+                    orderDetails : orderslist
+                }
+            })
+        }else{
+            alert("Can't cancel.. Already started preparing")
+        }
     }
 
     removeFood = (food) =>{
         var tableitem = this.state.tableItem;
         var orders = [...tableitem.orders];
-        var foodcheck = orders.filter((item) => {
-            return item.item !== food
+        var orderslist = [...this.state.orderDetails];
+        var tablename = tableitem.table;
+
+        var ordercheckplaced = orderslist.find((item) =>{
+            return item.food === food && item.table === tablename && item.status === "Placed"
         })
-        tableitem.orders = foodcheck;
+        var ordercheck = orderslist.filter((item) =>{
+            return item.food === food && item.table === tablename && item.status !== "Placed"
+        })
+        if(ordercheck.length === 0){
+            const index = orderslist.indexOf(ordercheckplaced);
+            orderslist.splice(index, 1);
+            var foodcheck = orders.filter((item) => {
+                return item.item !== food
+            })
+            tableitem.orders = foodcheck;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem,
+                    orderDetails : orderslist
+                }
+            })
+        }else{
+            if(!ordercheckplaced){
+                alert("cant cancel the orders")
+            }else{
+                console.log(ordercheckplaced)
+                var count = ordercheckplaced.count
+                confirmAlert({
+                    title: 'Cancel partial..',
+                    message: 'can cancel '+ordercheckplaced.count+' item',
+                    buttons: [
+                      {
+                        label: 'Yes',
+                        onClick: () => {
+                            const index = orderslist.indexOf(ordercheckplaced);
+                            orderslist.splice(index, 1);
+                            var foodcheck = orders.find((item) => {
+                                return item.item === food
+                            })
+                            const indexfoodtable = orders.indexOf(foodcheck);
+                            orders[indexfoodtable].count = orders[indexfoodtable].count - count
+                            tableitem.orders = orders;
+                            this.setState(() =>{
+                                return{
+                                    tableItem : tableitem,
+                                    orderDetails : orderslist
+                                }
+                            })
+                        }
+                      },
+                      {
+                        label: 'No',
+                        onClick: () => console.log("canceled the partial delete")
+                      }
+                    ]
+                  })
+            }
+        }
+
+       
+    }
+
+    orderStatusChange = (data) =>{
+        var orders = [...this.state.orderDetails]
+        var table = data[0]
+        var food = data[1]
+        var count = data[2]
+        var status = data[3]
+        var order = orders.find((item) =>{
+            return item.table === table && item.food === food && item.count === count && item.status === status
+        }) 
+        const index = orders.indexOf(order);
+        var tempstatus
+        switch (status) {
+            case "Placed":
+                tempstatus = "Preparing"
+                break;
+            case "Preparing":
+                tempstatus = "Ready"
+                break;
+            default:
+                tempstatus = "Served"
+                break;
+        }
+        if(tempstatus === "Served"){
+            orders.splice(index, 1) 
+        }else{
+            order.status = tempstatus;
+        }
+        
         this.setState(() =>{
             return{
-                tableItem : tableitem
+                orderDetails : orders
             }
         })
     }
@@ -315,7 +483,8 @@ class FoodProvider extends Component {
                         incrementFoodCount :this.incrementFoodCount,
                         decrementFoodCount : this.decrementFoodCount,
                         removeFood : this.removeFood,
-                        calTotal : this.calTotal
+                        calTotal : this.calTotal,
+                        orderStatusChange : this.orderStatusChange
                     } 
                 }>
                 {this.props.children}

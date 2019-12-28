@@ -125,6 +125,13 @@ export const orderDetails = [
         food : "Rice",
         count : 2,
         status : "Placed"
+    },
+    {
+        id : 3,
+        table : "Table-3",
+        food : "Juice",
+        count : 2,
+        status : "Placed"
     }
 ]
 

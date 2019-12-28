@@ -166,5 +166,9 @@ p,select,h6,button{
 }
 
 .test{
-  background-color :red !important;
+  background-color :#f3f3f3 !important;
+}
+
+.order_button{
+  border-radius: 5px;
 }

@@ -1,8 +1,102 @@
 import React, { Component } from 'react'
-// import ReactTable from "react-table"
-// import 'react-table/react-table.css'
 import Title from "../Title"
+import MUIDataTable from "mui-datatables";
+import  { FoodConsumer } from "../../context"
 export default class Orders extends Component {
+    constructor(props)
+    {
+      super(props);
+      this.state = {
+            columns:[
+                {
+                    name: "table",
+                    label: "table",
+                    options:{
+                        filter:false
+                    }
+                },
+                {
+                    name: "food",
+                    label: "food",
+                    options:{
+                        filter:false
+                    }
+                },
+                {
+                    name: "count",
+                    label: "count",
+                    options:{
+                        filter:false
+                    }
+                },
+                {
+                    name: "status",
+                    label: "status",
+                    options:{
+                        filter:true
+                    }
+                },
+                {
+                    name: 'status',
+                    label: 'Action',
+                    options: {
+                        filter: false,
+                        filterType: 'multiselect',
+                        customBodyRender: (value, tableMeta, updateValue) => {
+                            let buttontext;
+                            let buttonclass
+                            if(value === "Placed"){
+                                buttontext = "Prepare"
+                                buttonclass = "btn-info order_button"
+                            }
+                            
+                            else if(value === "Preparing"){
+                                buttontext = "Order Ready"
+                                buttonclass = "btn-warning order_button"
+                            }
+                            
+                            else if( value === "Ready"){
+                                buttontext ="Serve"
+                                buttonclass = "btn-success order_button"
+                            }
+                            
+                            else 
+                            buttontext = ""
+                            
+                            return (
+                                <FoodConsumer>
+                                    {valuecontext =>{
+                                            
+                                            return (
+                                                buttontext !== ""?
+                                                    <button className={buttonclass} onClick = { () =>{valuecontext.orderStatusChange(tableMeta.rowData)}}>{buttontext}</button>
+                                                    : null
+                                            )
+                                        }
+                                    }
+                                </FoodConsumer>
+                            )
+                        }
+                    }
+                  }  
+            ],
+            options : {
+                filterType: 'checkbox',
+                download:false,
+                print:false,
+                selectableRowsHeader:false,
+                selectableRows:"none"
+                // ,
+                // onRowsSelect: (rowsSelected, allRows) => {
+                //     console.log(rowsSelected, allRows);
+                //     // this.setState({ rowsSelected: allRows.map(row => row.dataIndex) });
+                // },
+                // onRowsDelete: rowsDeleted => {
+                //     console.log(rowsDeleted, 'were deleted!');
+                // }
+            }
+        }
+    }
     render() {
         return (
             <div>
@@ -13,7 +107,21 @@ export default class Orders extends Component {
 
                         </div>
                         <div className="col-12">
-
+                            <FoodConsumer>
+                                {value =>{
+                                    console.log(value.orderDetails)
+                                    return(
+                                        <MUIDataTable
+                                            title={"Food orders"}
+                                            data={value.orderDetails}
+                                            columns={this.state.columns}
+                                            options={this.state.options}
+                                            
+                                        />
+                                    )
+                                }}
+                            </FoodConsumer>
+                        
                         </div>
                     </div>
                 </div>
