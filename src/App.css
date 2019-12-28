@@ -146,8 +146,26 @@ p,select,h6,button{
   font-family: cursive!important;
 }
 .foodname_card{
-  background-color: #5fb8ff !important;
+  background-color: #ffff !important;
   padding-right: 10px !important;
+  border: 0px solid rgba(0,0,0,.125) !important;
+  /* border-top-color: rgba(0, 0, 0, 0.125); */
+    /* border-top-style: solid;
+    border-top-width: 1px;
+    border-right-color: rgba(0, 0, 0, 0.125);
+    border-right-style: solid;
+    border-right-width: 1px; */
+    border-bottom-color: rgba(0, 0, 0, 0.125) !important;
+    border-bottom-style: solid !important;
+    border-bottom-width: 1px !important;
+    /* border-left-color: rgba(0, 0, 0, 0.125);
+    border-left-style: solid;
+    border-left-width: 1px; */
+    border-image-source: initial !important;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
 }
 
 .disabled{
@@ -165,8 +183,8 @@ p,select,h6,button{
   cursor: pointer;
 }
 
-.test{
-  background-color :#f3f3f3 !important;
+.backgrounwhite{
+  background-color :#ffff !important;
 }
 
 .order_button{

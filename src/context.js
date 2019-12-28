@@ -26,7 +26,6 @@ class FoodProvider extends Component {
         foodStatus : foodStatus
     }
 
-
     handleProductAvailability = (id) => {
         let tempProductList = [...this.state.productlist];
         const selectedProduct = tempProductList.find(item => {
@@ -429,11 +428,11 @@ class FoodProvider extends Component {
                 tempstatus = "Served"
                 break;
         }
-        if(tempstatus === "Served"){
-            orders.splice(index, 1) 
-        }else{
+        // if(tempstatus === "Served"){
+        //     orders.splice(index, 1) 
+        // }else{
             order.status = tempstatus;
-        }
+        // }
         
         this.setState(() =>{
             return{
@@ -462,6 +461,60 @@ class FoodProvider extends Component {
             return 0
         }
     }
+
+    billPaid = () => {
+        var orders = [...this.state.orderDetails]
+        var tableorders = [...this.state.tableOrder]
+        var tablelist = [...this.state.tableList]
+        var tableitem = this.state.tableItem;
+        var table = tableitem.table;
+
+        var tableorder = tableorders.find((item) =>{
+            return item.table === table
+        });
+        var index = tableorders.indexOf(tableorder);
+        tableorders.splice(index,1);
+
+        for (var i in orders){
+            if(orders[i].table === table)
+            orders[i].status = "Served"
+        }
+
+        var tablestatus = tablelist.find((item) =>{
+            return item.table === table
+        })
+        var indextable = tablelist.indexOf(tablestatus)
+        tablelist[indextable].occupied = false
+
+        this.setState(() =>{
+            return{
+                orderDetails : orders,
+                tableList : tablelist,
+                tableOrder : tableorders,
+                tableItem : {}
+            }
+        })
+        // return  <Redirect  to="/" />
+    }
+
+    freeTable = () =>{
+        var tablelist = [...this.state.tableList]
+        var tableitem = this.state.tableItem;
+        var table = tableitem.table;
+
+        var tablestatus = tablelist.find((item) =>{
+            return item.table === table
+        })
+        var indextable = tablelist.indexOf(tablestatus)
+        tablelist[indextable].occupied = false
+       
+        this.setState(() =>{
+            return{
+                tableList : tablelist,
+                tableItem : {}
+            }
+        })
+    }
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -484,7 +537,9 @@ class FoodProvider extends Component {
                         decrementFoodCount : this.decrementFoodCount,
                         removeFood : this.removeFood,
                         calTotal : this.calTotal,
-                        orderStatusChange : this.orderStatusChange
+                        orderStatusChange : this.orderStatusChange,
+                        billPaid : this.billPaid,
+                        freeTable : this.freeTable
                     } 
                 }>
                 {this.props.children}

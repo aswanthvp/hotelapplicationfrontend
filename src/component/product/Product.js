@@ -8,7 +8,7 @@ export default class Product extends Component {
     render() {
         return (
             <div>
-                <Title name="Foods" title="Available" />
+                <Title name="Food" title="Available" />
                 <FoodConsumer>
                     {(value)=>{
                         return(

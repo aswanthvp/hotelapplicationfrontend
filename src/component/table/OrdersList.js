@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import { FoodConsumer } from '../../context'
+import { Link } from "react-router-dom";
 
 export default class OrdersList extends Component {
     render() {
         return (
-            <div className="col-12 mx-auto col-md-4 col-lg-7 my-3 maincontainer py-4">
+            <div className="col-12 mx-auto col-md-4 col-lg-7 my-3 maincontainer py-4 backgrounwhite">
                 <h6> Foods ordered till now...  <i className="fas fa-hamburger foodlist_icon"></i></h6>
                 <FoodConsumer>
                 {(value) => {
                     return(
-                        <div>
+                        <div className="mt-4">
                         {
                             value.tableItem.orders?
                                 value.tableItem.orders.length>0?
                                     value.tableItem.orders.map((item) => {
                                         let productdetails = value.productlist.filter((food) =>{return food.product === item.item});
                                         return(
-                                            <div className="card foodname_card" key = {item.item}>
+                                            <div className="card foodname_card mb-2 pb-2" key = {item.item}>
                                                 <div className="row foodname_row">
                                                     <div className="col-3 col-sm-3 col-xs-3 text-center text-capitalize foodlist">{item.item}</div>
                                                     <div className="col-2 col-sm-2 col-xs-2 text-center text-capitalize foodlist">Rs.{productdetails[0].price}</div>
@@ -31,6 +32,17 @@ export default class OrdersList extends Component {
                             :<center> <p> No Item avalible in the cart.... </p> </center>
                         }
                         <p className="text-right mr-5 m-4">Total:  Rs. {value.calTotal()}</p>
+                        {
+                            value.tableItem.orders?
+                                value.tableItem.orders.length>0?
+                                    <Link to="/">
+                                        <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.billPaid()}} >Bill paid</button>
+                                    </Link>
+                                :   <Link to="/">
+                                        <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.freeTable()}} >Free Table</button>
+                                    </Link>
+                            : null
+                        }
                         </div>
                     )}
                 }

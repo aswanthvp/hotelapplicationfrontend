@@ -67,7 +67,6 @@ export default class Orders extends Component {
                             return (
                                 <FoodConsumer>
                                     {valuecontext =>{
-                                            
                                             return (
                                                 buttontext !== ""?
                                                     <button className={buttonclass} onClick = { () =>{valuecontext.orderStatusChange(tableMeta.rowData)}}>{buttontext}</button>
@@ -114,10 +113,9 @@ export default class Orders extends Component {
                                     return(
                                         <MUIDataTable
                                             title={"Food orders"}
-                                            data={value.orderDetails}
+                                            data={value.orderDetails.filter((item)=>{return item.status !== "Served"})}
                                             columns={this.state.columns}
                                             options={this.state.options}
-                                            
                                         />
                                     )
                                 }}
