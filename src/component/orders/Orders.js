@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Title from "../Title"
 import MUIDataTable from "mui-datatables";
 import  { FoodConsumer } from "../../context"
+
 export default class Orders extends Component {
     constructor(props)
     {
@@ -10,28 +11,28 @@ export default class Orders extends Component {
             columns:[
                 {
                     name: "table",
-                    label: "table",
+                    label: "Table",
                     options:{
                         filter:false
                     }
                 },
                 {
                     name: "food",
-                    label: "food",
+                    label: "Food",
                     options:{
                         filter:false
                     }
                 },
                 {
                     name: "count",
-                    label: "count",
+                    label: "Count",
                     options:{
                         filter:false
                     }
                 },
                 {
                     name: "status",
-                    label: "status",
+                    label: "Status",
                     options:{
                         filter:true
                     }
