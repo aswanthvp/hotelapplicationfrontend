@@ -45,7 +45,7 @@ export default class FoodSelect extends Component {
                         }
                      </select>
                     <select id="foodselect" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
-                        <option value='DEFAULT' disabled>Select the food</option>
+                        <option value='DEFAULT' disabled>Select the food</option>             
                         {
                         foods.map((item)=>{
                             if(this.state.foodCategorySelect === "All"){

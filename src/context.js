@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
+import axios from "axios";
 import { productlist , modalProduct, foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
 
 const FoodContext = React.createContext();
@@ -10,21 +11,37 @@ const FoodContext = React.createContext();
 
 
 class FoodProvider extends Component {
-    state = {
-        productlist : productlist,
-        modalProductOpen : false,
-        modalProduct : modalProduct,
-        foodName : "",
-        foodPrice : "",
-        foodCategory : foodCategory,
-        foodCategoryDisplay : "All",
-        deleteCategory : false,
-        tableList : tableList,
-        tableOrder : tableOrder,
-        tableItem : {},
-        orderDetails : orderDetails,
-        foodStatus : foodStatus
+    constructor(props){
+        super(props);
+        this.state = {
+            productlist : productlist,
+            modalProductOpen : false,
+            modalProduct : modalProduct,
+            foodName : "",
+            foodPrice : "",
+            foodCategory : foodCategory,
+            foodCategoryDisplay : "All",
+            deleteCategory : false,
+            tableList : tableList,
+            tableOrder : tableOrder,
+            tableItem : {},
+            orderDetails : orderDetails,
+            foodStatus : foodStatus
+        }
     }
+    
+
+    componentDidMount() {
+        axios({
+            url:`http://localhost:3030/orders/get`,
+            method:"post"
+        }).then(response => {
+            console.log(response.data)
+        }).catch(err=>{
+            console.log(err)
+        });
+      }
+
 
     handleProductAvailability = (id) => {
         let tempProductList = [...this.state.productlist];
