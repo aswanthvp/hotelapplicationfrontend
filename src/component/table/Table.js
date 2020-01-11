@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default class Table extends Component {
     render() {
-        const {id, table, occupied} = this.props.table;
+        const {_id , table, occupied} = this.props.table;
         console.log(occupied);
         return (
             <TableWrapper className="col-9 mx-auto col-md-6 col-lg-2 my-3">
@@ -19,7 +19,7 @@ export default class Table extends Component {
                                 {
                                   occupied?
                                     <div onClick={()=>{
-                                        value.tableContentItem(id)
+                                        value.tableContentItem(_id)
                                       }}>
                                       <Link to="/tablecontent">
                                         <img src='table.jpeg' alt="" className="card-img-top" />
@@ -32,7 +32,7 @@ export default class Table extends Component {
                             <div className="card-footer">
                                 {occupied?
                                   <button className="align-self-center button button_occupied btn btn-default btn-sm">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></button>:
-                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
+                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(_id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
                                 }
                             </div>
                           </div>

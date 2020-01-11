@@ -12,8 +12,10 @@ export default class TableList extends Component {
                     <div className="row">
                         <FoodConsumer>
                             {value => {
+                                console.log(value.tableList)
                                 return value.tableList.map(table => {
-                                    return <Table key={table.id} table={table} />;
+                                    console.log(table._id);
+                                    return <Table key={table._id} table={table} />;
                                 });
                             }}
                         </FoodConsumer>

@@ -49,17 +49,6 @@ class FoodProvider extends Component {
             console.log(err)
         });
       }
-    //   componentWillMount(){
-    //     console.log('shfb');
-    //     axios({
-    //         url:`http://localhost:3030/orders/get`,
-    //         method:"post"
-    //     }).then(response => {
-    //         console.log(response.data)
-    //     }).catch(err=>{
-    //         console.log(err)
-    //     });
-    //   }
 
 
     handleProductAvailability = (id) => {
@@ -217,7 +206,7 @@ class FoodProvider extends Component {
 
     tableTake = id => {
         let tables = [...this.state.tableList];
-        let tabletake = tables.find((item) =>item.id === id);
+        let tabletake = tables.find((item) =>item._id === id);
         const index = tables.indexOf(tabletake);
         const table = tables[index];
         table.occupied = true;
@@ -237,9 +226,6 @@ class FoodProvider extends Component {
         if(food !== ""){
             var tableitem = this.state.tableItem;
             var orderslist = [...this.state.orderDetails];
-            // console.log(tableitem)
-            // console.log(orderslist)
-            // console.log(orderslist.length)
             var id = orderslist.length + 1
             var tablename = tableitem.table
 
