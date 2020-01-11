@@ -22,7 +22,8 @@ class FoodProvider extends Component {
             foodCategory : foodCategory,
             foodCategoryDisplay : "All",
             deleteCategory : false,
-            tableList : tableList,
+            // tableList : tableList,
+            tableList : [],
             tableOrder : tableOrder,
             tableItem : {},
             orderDetails : orderDetails,
@@ -30,17 +31,35 @@ class FoodProvider extends Component {
         }
     }
     
-
     componentDidMount() {
         axios({
-            url:`http://localhost:3030/orders/get`,
-            method:"post"
+            url:`http://localhost:3030/orders/getables`,
+            method:"get"
         }).then(response => {
             console.log(response.data)
+            if(response.data.result==="ok"){
+                console.log("dahvbh")
+                this.setState(() => {
+                    return {
+                        tableList: [...response.data.data]
+                    };
+                });
+            }
         }).catch(err=>{
             console.log(err)
         });
       }
+    //   componentWillMount(){
+    //     console.log('shfb');
+    //     axios({
+    //         url:`http://localhost:3030/orders/get`,
+    //         method:"post"
+    //     }).then(response => {
+    //         console.log(response.data)
+    //     }).catch(err=>{
+    //         console.log(err)
+    //     });
+    //   }
 
 
     handleProductAvailability = (id) => {
