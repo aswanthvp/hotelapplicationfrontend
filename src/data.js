@@ -1,27 +1,27 @@
 export const productlist =[
     {
-        id:1,
+        _id:1,
         product:"Rice",
         price:21,
         category:"Lunch",
         available:true
     },
     {
-        id:2,
+        _id:2,
         product:"Milk",
         price:5,
         category:"Deserts",
         available:true
     },
     {
-        id:3,
+        _id:3,
         product:"Curry",
         price:55,
         category:"Lunch",
         available:false
     },
     {
-        id:4,
+        _id:4,
         product:"Juice",
         price:15,
         category:"Juice",
@@ -29,55 +29,52 @@ export const productlist =[
     }
 ]
 
-export const modalProduct = {
-    
-}
 
 export const foodCategory = ["All","Breakfast","Lunch","Dinner","Snacks","Juice","Deserts"]
 
 export const tableList = [
     {
-        id:1,
+        _id:1,
         table:"Table-1",
         occupied:false
     },
     {
-        id:2,
+        _id:2,
         table:"Table-2",
         occupied:false
     },
     {
-        id:3,
+        _id:3,
         table:"Table-3",
         occupied:true
     },
     {
-        id:4,
+        _id:4,
         table:"Table-4",
         occupied:true
     },
     {
-        id:5,
+        _id:5,
         table:"Table-5",
         occupied:false
     },
     {
-        id:6,
+        _id:6,
         table:"Table-6",
         occupied:false
     },
     {
-        id:7,
+        _id:7,
         table:"Table-7",
         occupied:false
     },
     {
-        id:8,
+        _id:8,
         table:"Table-8",
         occupied:false
     },
     {
-        id:9,
+        _id:9,
         table:"Table-9",
         occupied:false
     }
@@ -86,7 +83,7 @@ export const tableList = [
 
 export const tableOrder = [
     {
-        id:3,
+        _id:3,
         table:"Table-3",
         orders:[
             {
@@ -96,7 +93,7 @@ export const tableOrder = [
         ]
     },
     {
-        id:4,
+        _id:4,
         table:"Table-4",
         orders:[
             {
@@ -113,21 +110,21 @@ export const tableOrder = [
 
 export const orderDetails = [
     {
-        id : 1,
+        _id : 1,
         table : "Table-4",
         food : "Juice",
         count : 6,
         status : "Placed"
     },
     {
-        id : 2,
+        _id : 2,
         table : "Table-4",
         food : "Rice",
         count : 2,
         status : "Placed"
     },
     {
-        id : 3,
+        _id : 3,
         table : "Table-3",
         food : "Juice",
         count : 2,

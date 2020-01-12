@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import axios from "axios";
-import { productlist , modalProduct, foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
+import { productlist ,foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
 
 const FoodContext = React.createContext();
 
@@ -14,31 +14,75 @@ class FoodProvider extends Component {
     constructor(props){
         super(props);
         this.state = {
-            productlist : productlist,
+            // productlist : productlist,
+            // modalProductOpen : false,
+            // modalProduct : {},
+            // foodName : "",
+            // foodPrice : "",
+            // foodCategory : foodCategory,
+            // foodCategoryDisplay : "All",
+            // deleteCategory : false,
+            // tableList : tableList,
+            // tableOrder : tableOrder,
+            // tableItem : {},
+            // orderDetails : orderDetails,
+            // foodStatus : foodStatus,
+            // modalTableOpen : true
+
+            ////////////////////////////////
+            productlist : [],
             modalProductOpen : false,
-            modalProduct : modalProduct,
+            modalProduct : {},
             foodName : "",
             foodPrice : "",
+            tableName : "",
             foodCategory : foodCategory,
             foodCategoryDisplay : "All",
             deleteCategory : false,
-            // tableList : tableList,
             tableList : [],
-            tableOrder : tableOrder,
+            tableOrder : [],
             tableItem : {},
-            orderDetails : orderDetails,
-            foodStatus : foodStatus
+            orderDetails : [],
+            foodStatus : foodStatus,
+            modalTableOpen : false,
+            modalTable : {}
         }
     }
-    
     componentDidMount() {
+        this.gettables();
+        this.gettableOrder();
+        this.getProduct();
+    }
+
+    //Table operations **********************************************
+    //Function to close the table modal
+    closeTableModal = () => {
+        this.setState(() => {
+            return { modalTableOpen: false };
+        });
+    };
+
+    //Function to open the table modal to edit the table
+    tableOpenModalUpdate = (id,table) =>{
+        this.setState(() => {
+            return { modalTable:{_id:id,table:table,edit:true}, modalTableOpen: true };
+        });
+    }
+
+    //Function to open the table modal to add the table
+    tableOpenModalAdd = () => {
+        this.setState(() => {
+          return {  modalTableOpen: true };
+        });
+    };
+
+    //Function to get the table details from the DB
+    gettables = () =>{
         axios({
-            url:`http://localhost:3030/orders/getables`,
+            url:`http://localhost:3030/table/getables`,
             method:"get"
         }).then(response => {
-            console.log(response.data)
             if(response.data.result==="ok"){
-                console.log("dahvbh")
                 this.setState(() => {
                     return {
                         tableList: [...response.data.data]
@@ -48,30 +92,277 @@ class FoodProvider extends Component {
         }).catch(err=>{
             console.log(err)
         });
-      }
+    }
 
-
-    handleProductAvailability = (id) => {
-        let tempProductList = [...this.state.productlist];
-        const selectedProduct = tempProductList.find(item => {
-            return item.id === id;
-        });
-        const index = tempProductList.indexOf(selectedProduct);
-        const product = tempProductList[index];
-        product.available = product.available ? false: true;
-        this.setState(() => {
-            return {
-                productlist: [...tempProductList]
-            };
+    //Function to delete the table from the DB
+    tableDelete = (id,table) => {
+        let temptable= {id:id};
+        axios({
+            url:`http://localhost:3030/table/deletetable`,
+            method:"post",
+            data: temptable
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.gettables();
+                this.setState(() => {
+                    return { modalTableOpen: false };
+                });
+            }
+        }).catch(err=>{
+            console.log(err)
         });
     }
 
+    //Function to update the table name from the DB
+    updateTable = (table) =>{
+        let modaltable = this.state.modalTable;
+        let temptable= {table:table,id:modaltable._id};
+        axios({
+            url:`http://localhost:3030/table/updatetable`,
+            method:"post",
+            data: temptable
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.gettables();
+                this.setState(() => {
+                    return { modalTableOpen: false };
+                });
+            }else if(response.data.result === "failed"){
+                alert("able name already there");
+            }else{
+                alert("Error occured while adding the table")
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    };
+
+    //Function to add the table to the DB
+    addTable = (tableName) =>{
+        let temptable= {table:tableName};
+        axios({
+            url:`http://localhost:3030/table/addtable`,
+            method:"post",
+            data: temptable
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.gettables();
+                this.setState(() => {
+                    return { modalTableOpen: false };
+                });
+            }else if(response.data.result === "failed"){
+                alert("able name already there");
+            }else{
+                alert("Error occured while adding the table")
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to get the table orders details
+    gettableOrder = () => {
+        axios({
+            url:`http://localhost:3030/tableorders/getorders`,
+            method:"post"
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.setState(() => {
+                    return {
+                        tableOrder: [...response.data.data]
+                    };
+                });
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to take the table or to make it occupied
+    tableTake = (id,table) => {
+        let temptable= {id:id,table:table};
+        axios({
+            url:`http://localhost:3030/table/taketable`,
+            method:"post",
+            data: temptable
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.gettables();
+                this.gettableOrder();
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to assign table order details in table list 
+    tableContentItem = (table) => {
+        const tableitem = this.state.tableOrder.find(item =>item.table === table);
+        this.setState(() =>{
+            return{
+                tableItem : tableitem
+            }
+        });
+    }
+
+    //Function to free the table 
+    freeTable = () =>{
+        var tableitem = this.state.tableItem;
+        let temptable= {id:tableitem._id,table:tableitem.table};
+        axios({
+            url:`http://localhost:3030/table/freetable`,
+            method:"post",
+            data: temptable
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.gettables();
+                return{
+                    tableItem : {}
+                }
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+
+
+    //****************************************** */
+    //Function to handle the product
+
+    //Function to get the product from the DB
+    getProduct = () => {
+        axios({
+            url:`http://localhost:3030/product/getproduct`,
+            method:"get"
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.setState(() => {
+                    return {
+                        productlist: [...response.data.data]
+                    };
+                });
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to add the product
+    addProduct = ( food, price ,category) => {
+        if(food === ""){
+            console.log("please enter food name");
+            document.getElementById("foodName").classList.add("warning");
+        }
+        else if(category === ""){
+            console.log("please select the category");
+            document.getElementById("selectCategory").classList.add("warning");
+            document.getElementById("foodName").classList.remove("warning");
+        }
+        else if(price === "" || isNaN(price)){
+            console.log("please enter the food price");
+            document.getElementById("foodName").classList.remove("warning");
+            document.getElementById("foodPrice").classList.add("warning");
+        }
+        else{
+
+            document.getElementById("foodName").classList.remove("warning");
+            document.getElementById("foodPrice").classList.remove("warning");
+            let tempFood = {_id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
+            axios({
+                url:`http://localhost:3030/product/addproduct`,
+                method:"post",
+                data : tempFood
+            }).then(response => {
+                if(response.data.result==="ok"){
+                    this.getProduct();
+                    this.setState(() => {
+                        return {
+                            modalProductOpen: false  
+                        };
+                    });
+                }else if(response.data.result === 'failed'){
+                    alert("Product already added")
+                }else{
+                    alert("Error occured while adding product")
+                }
+            }).catch(err=>{
+                console.log(err)
+            });
+            
+        }
+    }
+
+    //Function to update the product
+    updateProduct = (id, food, price,category) => {
+        let tempFood = {id:id,product:food,price:price,category:category}
+        axios({
+            url:`http://localhost:3030/product/updateproduct`,
+            method:"post",
+            data : tempFood
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.getProduct();
+                this.setState(() => {
+                    return {
+                        modalProductOpen: false  
+                    };
+                });
+            }else if(response.data.result === 'failed'){
+                alert("Product already added")
+            }else{
+                alert("Error occured while adding product")
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to chnage the product availability
+    handleProductAvailability = (id) => {
+        // let tempProductList = [...this.state.productlist];
+        // const selectedProduct = tempProductList.find(item => {
+        //     return item._id === id;
+        // });
+        // const index = tempProductList.indexOf(selectedProduct);
+        // const product = tempProductList[index];
+        // product.available = product.available ? false: true;
+        // this.setState(() => {
+        //     return {
+        //         productlist: [...tempProductList]
+        //     };
+        // });
+        let tempFood ={id:id}
+        axios({
+            url:`http://localhost:3030/product/updateproductavailability`,
+            method:"post",
+            data : tempFood
+        }).then(response => {
+            if(response.data.result==="ok"){
+                this.getProduct();
+                this.setState(() => {
+                    return {
+                        modalProductOpen: false  
+                    };
+                });
+            }else if(response.data.result === 'failed'){
+                alert("Product already added")
+            }else{
+                alert("Error occured while adding product")
+            }
+        }).catch(err=>{
+            console.log(err)
+        });
+    }
+
+    //Function to close the product modal 
     closeProductModal = () => {
         this.setState(() => {
             return { modalProductOpen: false };
         });
     };
 
+    //Function to open the product modal
     productOpenModal = id => {
         const product = this.getItem(id);
         this.setState(() => {
@@ -80,12 +371,14 @@ class FoodProvider extends Component {
         });
     };
 
+    //Function to add the product details in
     productOpenModalAdd = () => {
         this.setState(() => {
-          return { modalProduct: {id:"sdas", product:"", price:"", available:true, edit:false}, modalProductOpen: true };
+          return { modalProduct: {_id:"sdas", product:"", price:"", available:true, edit:false}, modalProductOpen: true };
         });
     };
 
+    //Function to edit the product category
     productCategoryEdit = () =>{
         let temp;
         if(this.state.deleteCategory){
@@ -98,6 +391,7 @@ class FoodProvider extends Component {
         })
     }
 
+    //Function to add the product category
     productCategoryAdd = (category) => {
         if(category === ""){
             
@@ -115,6 +409,7 @@ class FoodProvider extends Component {
         }
     }
 
+    //Function to delete product category
     productCategoryDelete = (category) => {
         if(category === "All"){
             alert("Cant delet All")
@@ -140,92 +435,18 @@ class FoodProvider extends Component {
         })
     }
 
-    updateProduct = (id, food, price,category) => {
-        let tempCart = [...this.state.productlist];
-        const selectedProduct = tempCart.find(item => {
-        return item.id === id;
-        });
-        const index = tempCart.indexOf(selectedProduct);
-        const product = tempCart[index];
-        product.product = food;
-        product.price = price;
-        product.category = category;
-        this.setState(() => {
-            return {
-                 productlist: [...tempCart] , modalProductOpen: false  
-            };
-        });
-    }
-
-    addProduct = ( food, price ,category) => {
-        console.log(category)
-        if(food === ""){
-            console.log("please enter food name");
-            document.getElementById("foodName").classList.add("warning");
-        }
-        else if(category === ""){
-            console.log("please select the category");
-            document.getElementById("selectCategory").classList.add("warning");
-            document.getElementById("foodName").classList.remove("warning");
-        }
-        else if(price === "" || isNaN(price)){
-            console.log("please enter the food price");
-            document.getElementById("foodName").classList.remove("warning");
-            document.getElementById("foodPrice").classList.add("warning");
-        }
-        else{
-
-            document.getElementById("foodName").classList.remove("warning");
-            document.getElementById("foodPrice").classList.remove("warning");
-            let tempFood = {id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
-            let tempCart = [...this.state.productlist];
-            console.log(this.state.productlist)
-            tempCart.push(tempFood);
-            console.log(tempCart)
-            this.setState(() => {
-                return {
-                    productlist: tempCart , modalProductOpen: false  
-                };
-            });
-        }
-    }
+    
 
     getItem = id => {
-        const product = this.state.productlist.find(item => item.id === id);
+        const product = this.state.productlist.find(item => item._id === id);
         return product;
     };
-
-    tableContentItem = (id) => {
-        const tableitem = this.state.tableOrder.find(item =>item.id === id);
-        this.setState(() =>{
-            return{
-                tableItem : tableitem
-            }
-        });
-    }
-
-    tableTake = id => {
-        let tables = [...this.state.tableList];
-        let tabletake = tables.find((item) =>item._id === id);
-        const index = tables.indexOf(tabletake);
-        const table = tables[index];
-        table.occupied = true;
-        let tableorders = [...this.state.tableOrder];
-        let tablenew = {id:id,table:table.table,orders:[]};
-        tableorders.push(tablenew);
-        this.setState(() =>{
-            return{
-                tableList : [...tables],
-                tableOrder : tableorders
-            }
-        })
-    }
 
 
     updateFoodSelected = (food) =>{
         if(food !== ""){
             var tableitem = this.state.tableItem;
-            var orderslist = [...this.state.orderDetails];
+            var orderslist = [...this.state.orderDetails];  
             var id = orderslist.length + 1
             var tablename = tableitem.table
 
@@ -240,7 +461,7 @@ class FoodProvider extends Component {
                         count : 1
                     })
                     orderslist.push({
-                        id : id,
+                        _id : id,
                         table : tablename,
                         food : food,
                         count : 1,
@@ -257,7 +478,7 @@ class FoodProvider extends Component {
                         orderslist[index] = ordercheck;
                     }else{
                         orderslist.push({
-                            id : id,
+                            _id : id,
                             table : tablename,
                             food : food,
                             count : 1,
@@ -282,7 +503,7 @@ class FoodProvider extends Component {
         var productlist = [...this.state.productlist]
         var orderslist = [...this.state.orderDetails];
         var tablename = tableitem.table;
-        var id = tableitem.id
+        var id = tableitem._id
         var foodavailability = productlist.filter((item) =>{
             return item.product === food
         })
@@ -302,7 +523,7 @@ class FoodProvider extends Component {
                 orderslist[index] = ordercheck;
             }else{
                 orderslist.push({
-                    id : id,
+                    _id : id,
                     table : tablename,
                     food : food,
                     count : 1,
@@ -519,24 +740,6 @@ class FoodProvider extends Component {
         // return  <Redirect  to="/" />
     }
 
-    freeTable = () =>{
-        var tablelist = [...this.state.tableList]
-        var tableitem = this.state.tableItem;
-        var table = tableitem.table;
-
-        var tablestatus = tablelist.find((item) =>{
-            return item.table === table
-        })
-        var indextable = tablelist.indexOf(tablestatus)
-        tablelist[indextable].occupied = false
-       
-        this.setState(() =>{
-            return{
-                tableList : tablelist,
-                tableItem : {}
-            }
-        })
-    }
     render() {
         return (
             <FoodContext.Provider value={ 
@@ -561,7 +764,13 @@ class FoodProvider extends Component {
                         calTotal : this.calTotal,
                         orderStatusChange : this.orderStatusChange,
                         billPaid : this.billPaid,
-                        freeTable : this.freeTable
+                        freeTable : this.freeTable,
+                        closeTableModal : this.closeTableModal,
+                        updateTable : this.updateTable,
+                        addTable : this.addTable,
+                        tableOpenModalAdd : this.tableOpenModalAdd,
+                        tableOpenModalUpdate : this.tableOpenModalUpdate,
+                        tableDelete : this.tableDelete
                     } 
                 }>
                 {this.props.children}

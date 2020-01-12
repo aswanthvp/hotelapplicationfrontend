@@ -8,13 +8,25 @@ export default class TableList extends Component {
         return (
             <div className="">
                 <Title name="Table" title=" View" />
+                <FoodConsumer>
+                    {value => {
+                        return(
+                            <div className="col-12">
+                                <div className=" fas fa-plus-circle add_product pull-left" 
+                                    onClick={() => {
+                                    value.tableOpenModalAdd();
+                                    }}
+                                    >
+                                </div>
+                            </div>
+                        )
+                    }}
+                </FoodConsumer>
                 <div className="container py-5">
                     <div className="row">
                         <FoodConsumer>
                             {value => {
-                                console.log(value.tableList)
                                 return value.tableList.map(table => {
-                                    console.log(table._id);
                                     return <Table key={table._id} table={table} />;
                                 });
                             }}

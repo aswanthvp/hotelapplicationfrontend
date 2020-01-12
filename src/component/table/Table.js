@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { FoodConsumer } from "../../context";
 import { Link } from 'react-router-dom';
 
+
 export default class Table extends Component {
     render() {
         const {_id , table, occupied} = this.props.table;
-        console.log(occupied);
         return (
             <TableWrapper className="col-9 mx-auto col-md-6 col-lg-2 my-3">
                 <div className="card tablecard">
@@ -19,20 +19,43 @@ export default class Table extends Component {
                                 {
                                   occupied?
                                     <div onClick={()=>{
-                                        value.tableContentItem(_id)
+                                        value.tableContentItem(table)
                                       }}>
                                       <Link to="/tablecontent">
                                         <img src='table.jpeg' alt="" className="card-img-top" />
                                       </Link>
                                     </div>:
+                                    <div>
+                                    <button
+                                      className="cart-btn-edit"
+                                      // disabled={inCart ? true : false}
+                                      onClick={() => {
+                                        value.tableOpenModalUpdate(_id,table);
+                                      }}
+                                    >
+                                      
+                                        <i className="fas fa-edit" />
+                                    </button>
+                                    <button
+                                      className="cart-btn-delete"
+                                      // disabled={inCart ? true : false}
+                                      onClick={() => {
+                                        value.tableDelete(_id,table);
+                                        // value.openModal(id);
+                                      }}
+                                    >
+                                      
+                                        <i className="fas fa-trash-alt" />
+                                    </button>
                                    <img src='table.jpeg' alt="" className="card-img-top" />
+                                   </div>
                                 }
                                
                             </div>
                             <div className="card-footer">
                                 {occupied?
                                   <button className="align-self-center button button_occupied btn btn-default btn-sm">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></button>:
-                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(_id)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
+                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(_id,table)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
                                 }
                             </div>
                           </div>
@@ -81,24 +104,46 @@ const TableWrapper = styled.div`
   .img-container:hover .card-img-top {
     transform: scale(1.1);
   }
-  .cart-btn {
+  .cart-btn-delete {
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
     padding: 0.2rem 0.4rem;
-    background: var(--lightBlue);
+    background: var(--mainlightBlue);
     border: none;
-    color: var(--mainWhite);
-    font-size: 1.4rem;
-    border-radius: 0.5rem 0 0 0;
+    color: var(--mainlightRed);
+    font-size: .8rem;
+    border-radius: 0 0 0 0.5rem;
     transform: translate(100%, 100%);
     transition: all 1s ease-in-out;
   }
-  .img-container:hover .cart-btn {
+  .cart-btn-edit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.2rem 0.4rem;
+    background: var(--mainlightBlue);
+    border: none;
+    color: var(--mainlightGreen);
+    font-size: .8rem;
+    border-radius: 0 0 0.5rem 0;
+    transform: translate(-100%, -100%);
+    transition: all 1s ease-in-out;
+  }
+  .img-container:hover .cart-btn-delete {
     transform: translate(0, 0);
   }
-  .cart-btn:hover {
-    color: var(--mainBlue);
+  .img-container:hover .cart-btn-edit {
+    transform: translate(0, 0);
+  }
+  .cart-btn-delete:hover {
+    color: var(--mainRed);
+    background: var(--lightBlue);
+    cursor: pointer;
+  }
+  .cart-btn-edit:hover {
+    color: var(--mainGreen);
+    background: var(--lightBlue);
     cursor: pointer;
   }
   .text-color{

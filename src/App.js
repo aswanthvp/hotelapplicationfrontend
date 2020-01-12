@@ -9,6 +9,7 @@ import Product from './component/product/Product'
 import Default from './component/Default'
 import ModalProduct from "./component/product/ModalProduct";
 import TableContent from "./component/table/TableContent";
+import ModalTable from "./component/table/ModalTable"
 
 
 class App extends React.Component {
@@ -26,6 +27,7 @@ class App extends React.Component {
           <Route component={Default}/>
         </Switch>
         <ModalProduct/>
+        <ModalTable/>
       </React.Fragment>
     );
   }

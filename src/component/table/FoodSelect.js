@@ -50,14 +50,14 @@ export default class FoodSelect extends Component {
                         foods.map((item)=>{
                             if(this.state.foodCategorySelect === "All"){
                                 if(item.available)
-                            return <option className="text-capitalize" key={item.id} value={item.product}>{item.product} </option>
+                            return <option className="text-capitalize" key={item._id} value={item.product}>{item.product} </option>
                                 else
-                                return <option className="text-capitalize" value={item.id} key={item.product} disabled>{item.product}</option>
+                                return <option className="text-capitalize" value={item._id} key={item.product} disabled>{item.product}</option>
                             }else if(item.category === this.state.foodCategorySelect){
                                 if(item.available)
-                                return <option className="text-capitalize" key={item.id} value={item.product}>{item.product}</option>
+                                return <option className="text-capitalize" key={item._id} value={item.product}>{item.product}</option>
                                 else
-                                return <option className="text-capitalize" value={item.id} key={item.product} disabled>{item.product}</option>
+                                return <option className="text-capitalize" value={item._id} key={item.product} disabled>{item.product}</option>
                             }else{
                                 return null
                             }

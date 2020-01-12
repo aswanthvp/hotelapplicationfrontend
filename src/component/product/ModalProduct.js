@@ -27,7 +27,7 @@ export default class ModalProduct extends Component {
             <FoodConsumer>
                 {value =>{
                     const { modalProductOpen, closeProductModal, updateProduct, addProduct } = value;
-                    const { id, product, price, edit ,category} = value.modalProduct;
+                    const { _id, product, price, edit ,category} = value.modalProduct;
                     if(!modalProductOpen){
                         return null
                     }else{
@@ -71,7 +71,7 @@ export default class ModalProduct extends Component {
                                             {edit ? 
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        updateProduct(id, this.foodName.value,this.foodPrice.value,this.foodCategory)
+                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.foodCategory)
                                                     }}>
                                                     Update
                                                 </button>

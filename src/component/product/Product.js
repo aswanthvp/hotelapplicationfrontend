@@ -37,7 +37,7 @@ export default class Product extends Component {
                                                                     (value.productlist.length>0?
                                                                         (
                                                                             value.productlist.map((product) => {
-                                                                             return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>                                
+                                                                             return <ProductDetails key={product._id} value = {value} product={product} ></ProductDetails>                                
                                                                             })
                                                                         ):(
                                                                             <p>No Food Available Here.<br/>Add Food to the category to display here</p>
@@ -51,7 +51,7 @@ export default class Product extends Component {
                                                                                 value.productlist.filter((product) =>{
                                                                                     return product.category === value.foodCategoryDisplay;
                                                                                 }).map((product)=>{
-                                                                                    return <ProductDetails key={product.id} value = {value} product={product} ></ProductDetails>
+                                                                                    return <ProductDetails key={product._id} value = {value} product={product} ></ProductDetails>
                                                                                 })
                                                                             ):(
                                                                                 <p>No Food Available Here.<br/>Add Food to the category to display here</p>
