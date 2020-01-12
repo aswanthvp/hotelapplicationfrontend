@@ -44,7 +44,10 @@ export default class Product extends Component {
                                                                         )
                                                                     )
                                                                 ):(
+                                                                        
                                                                         (value.productlist.filter((product) =>{
+                                                                            console.log(value.foodCategoryDisplay)
+                                                                            console.log(product)
                                                                             return product.category === value.foodCategoryDisplay
                                                                         }).length>0?
                                                                             (

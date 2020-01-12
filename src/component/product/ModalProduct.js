@@ -71,7 +71,7 @@ export default class ModalProduct extends Component {
                                             {edit ? 
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.foodCategory)
+                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.state.foodCategory)
                                                     }}>
                                                     Update
                                                 </button>
