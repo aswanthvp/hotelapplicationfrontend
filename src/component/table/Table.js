@@ -151,6 +151,7 @@ const TableWrapper = styled.div`
   }
   .button{
     width: -webkit-fill-available;
+    width: 100%;
     cursor: grab;
     border: none;
     text-align: center;
