@@ -5,6 +5,9 @@ import axios from "axios";
 import { productlist ,foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
 
 const FoodContext = React.createContext();
+const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
+const backendURL1 = 'https://hotelapplicationbackend.herokuapp.com/';
+const backendURL2 = 'http://localhost:3030/';
 
 //Provide
 //Consumer
@@ -79,7 +82,7 @@ class FoodProvider extends Component {
     //Function to get the table details from the DB
     gettables = () =>{
         axios({
-            url:`http://localhost:3030/table/getables`,
+            url:backendURL+`table/getables`,
             method:"get"
         }).then(response => {
             if(response.data.result==="ok"){
@@ -98,7 +101,7 @@ class FoodProvider extends Component {
     tableDelete = (id,table) => {
         let temptable= {id:id};
         axios({
-            url:`http://localhost:3030/table/deletetable`,
+            url:backendURL+`table/deletetable`,
             method:"post",
             data: temptable
         }).then(response => {
@@ -118,7 +121,7 @@ class FoodProvider extends Component {
         let modaltable = this.state.modalTable;
         let temptable= {table:table,id:modaltable._id};
         axios({
-            url:`http://localhost:3030/table/updatetable`,
+            url:backendURL+`table/updatetable`,
             method:"post",
             data: temptable
         }).then(response => {
@@ -141,7 +144,7 @@ class FoodProvider extends Component {
     addTable = (tableName) =>{
         let temptable= {table:tableName};
         axios({
-            url:`http://localhost:3030/table/addtable`,
+            url:backendURL+`table/addtable`,
             method:"post",
             data: temptable
         }).then(response => {
@@ -163,7 +166,7 @@ class FoodProvider extends Component {
     //Function to get the table orders details
     gettableOrder = () => {
         axios({
-            url:`http://localhost:3030/tableorders/getorders`,
+            url:backendURL+`tableorders/getorders`,
             method:"post"
         }).then(response => {
             if(response.data.result==="ok"){
@@ -182,7 +185,7 @@ class FoodProvider extends Component {
     tableTake = (id,table) => {
         let temptable= {id:id,table:table};
         axios({
-            url:`http://localhost:3030/table/taketable`,
+            url:backendURL+`table/taketable`,
             method:"post",
             data: temptable
         }).then(response => {
@@ -210,7 +213,7 @@ class FoodProvider extends Component {
         var tableitem = this.state.tableItem;
         let temptable= {id:tableitem._id,table:tableitem.table};
         axios({
-            url:`http://localhost:3030/table/freetable`,
+            url:backendURL+`table/freetable`,
             method:"post",
             data: temptable
         }).then(response => {
@@ -233,7 +236,7 @@ class FoodProvider extends Component {
     //Function to get the product from the DB
     getProduct = () => {
         axios({
-            url:`http://localhost:3030/product/getproduct`,
+            url:backendURL+`product/getproduct`,
             method:"get"
         }).then(response => {
             if(response.data.result==="ok"){
@@ -270,7 +273,7 @@ class FoodProvider extends Component {
             document.getElementById("foodPrice").classList.remove("warning");
             let tempFood = {_id:Math.floor(Math.random()*1000),product:food,price:price,available:true,category:category}
             axios({
-                url:`http://localhost:3030/product/addproduct`,
+                url:backendURL+`product/addproduct`,
                 method:"post",
                 data : tempFood
             }).then(response => {
@@ -297,7 +300,7 @@ class FoodProvider extends Component {
     updateProduct = (id, food, price,category) => {
         let tempFood = {id:id,product:food,price:price,category:category}
         axios({
-            url:`http://localhost:3030/product/updateproduct`,
+            url:backendURL+`product/updateproduct`,
             method:"post",
             data : tempFood
         }).then(response => {
@@ -334,7 +337,7 @@ class FoodProvider extends Component {
         // });
         let tempFood ={id:id}
         axios({
-            url:`http://localhost:3030/product/updateproductavailability`,
+            url:backendURL+`product/updateproductavailability`,
             method:"post",
             data : tempFood
         }).then(response => {
