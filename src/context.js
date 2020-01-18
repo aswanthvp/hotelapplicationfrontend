@@ -5,9 +5,9 @@ import axios from "axios";
 import { productlist ,foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
 
 const FoodContext = React.createContext();
-const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
+const backendURL2 = 'https://hotelapplicationbackend.herokuapp.com/';
 const backendURL1 = 'https://hotelapplicationbackend.herokuapp.com/';
-const backendURL2 = 'http://localhost:3030/';
+const backendURL = 'http://localhost:3030/';
 
 //Provide
 //Consumer
@@ -39,7 +39,7 @@ class FoodProvider extends Component {
             foodName : "",
             foodPrice : "",
             tableName : "",
-            foodCategory : foodCategory,
+            foodCategory : ['All'],
             foodCategoryDisplay : "All",
             deleteCategory : false,
             tableList : [],
@@ -55,6 +55,7 @@ class FoodProvider extends Component {
         this.gettables();
         this.gettableOrder();
         this.getProduct();
+        this.getCategory();
     }
 
     //Table operations **********************************************
@@ -219,9 +220,11 @@ class FoodProvider extends Component {
         }).then(response => {
             if(response.data.result==="ok"){
                 this.gettables();
-                return{
-                    tableItem : {}
-                }
+                this.setState(() =>{
+                    return{
+                        tableItem : {}
+                    }
+                });
             }
         }).catch(err=>{
             console.log(err)
@@ -323,18 +326,6 @@ class FoodProvider extends Component {
 
     //Function to chnage the product availability
     handleProductAvailability = (id) => {
-        // let tempProductList = [...this.state.productlist];
-        // const selectedProduct = tempProductList.find(item => {
-        //     return item._id === id;
-        // });
-        // const index = tempProductList.indexOf(selectedProduct);
-        // const product = tempProductList[index];
-        // product.available = product.available ? false: true;
-        // this.setState(() => {
-        //     return {
-        //         productlist: [...tempProductList]
-        //     };
-        // });
         let tempFood ={id:id}
         axios({
             url:backendURL+`product/updateproductavailability`,
@@ -381,6 +372,35 @@ class FoodProvider extends Component {
         });
     };
 
+
+
+    //Function regarding the food category
+
+
+    //Function to get the food catgory from the DB
+    getCategory = () => {
+        axios({
+            url:backendURL+`category/getproductcategory`,
+            method:"post",
+        }).then(res => {
+            if(res.data.result === "ok"){
+                var temp = res.data.data.map((item)=>{
+                    return item.foodCategory
+                });
+                var tempfoodcategory =["All"].concat(temp)
+                this.setState(() => {
+                    return{
+                        foodCategory : [...tempfoodcategory]
+                    }
+                })
+            }else{
+                alert("Error in getting the food category from the DB")
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     //Function to edit the product category
     productCategoryEdit = () =>{
         let temp;
@@ -401,14 +421,20 @@ class FoodProvider extends Component {
             document.getElementById("foodCategory").classList.add("warning");
         }else{
             document.getElementById("foodCategory").classList.remove("warning");
-            let temp = [...this.state.foodCategory];
-            temp.push(category);
-            temp = [...new Set(temp)];
-            console.log(temp)
-            this.setState(()=>{
-                return {foodCategory:temp}
+            let tempdata = { foodCategory : category }
+            axios({
+                url:backendURL+"category/addfoodcategory",
+                method:"post",
+                data: tempdata
+            }).then(res =>{
+                if(res.data.result === 'ok'){
+                    this.getCategory();
+                }else{
+                    alert(res.data.data);
+                }
+            }).catch(error => {
+                alert("Error in adding the category");
             });
-            document.getElementById("foodCategory").value = "";
         }
     }
 
@@ -418,16 +444,19 @@ class FoodProvider extends Component {
             alert("Cant delet All")
             return null
         }else{
-
-            let temp = [...this.state.foodCategory]
-            let tempNew = [];
-            temp.forEach((item)=>{
-                if (item !== category){
-                    tempNew.push(item)
+            let tempdata = { foodCategory : category }
+            axios({
+                url:backendURL+"category/deletefoodcategory",
+                method:"post",
+                data:tempdata
+            }).then(res => {
+                if(res.data.result === 'ok'){
+                    this.getCategory();
+                }else{
+                    alert(res.data.data);
                 }
-            });
-            this.setState(()=>{
-                return {foodCategory:tempNew}
+            }).catch(error => {
+                alert("Not able to delete the category")
             })
         }
     }

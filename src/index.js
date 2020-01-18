@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom'
 import App from './App.js';
 import {FoodProvider} from './context'
+// import { hashHistory } from'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
     <FoodProvider>
-        <Router>
+        <Router >
             <App />
         </Router>
     </FoodProvider>
