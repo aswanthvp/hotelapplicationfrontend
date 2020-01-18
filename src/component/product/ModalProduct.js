@@ -5,29 +5,33 @@ import styled from "styled-components";
 
 
 export default class ModalProduct extends Component {
-    constructor(props)
-    {
-      super(props);
-      this.state = {
-        //   foodName: '',
-        //   foodPrice:"",
-          foodCategory:""
-        };
-    }
+    // constructor(props)
+    // {
+    //   super(props);
+    //   this.state = {
+    //       foodCategory:""
+    //     };
+    // }
     
-    updateCategory = (event) => {
-        let category = event.target.value;
-        document.getElementById("selectCategory").classList.remove("warning");   
-        this.setState(()=>{
-            return{foodCategory:category}
-        })
-    }
+    // updateCategory = (event) => {
+    //     let category = event.target.value;
+    //     console.log(category)
+    //     document.getElementById("selectCategory").classList.remove("warning");   
+    //     this.setState(()=>{
+    //         return{
+    //             category:category
+    //         };
+    //     })
+    //     console.log("ghjk");
+    //     console.log(this.state)
+    // }
     render() {
         return (
             <FoodConsumer>
                 {value =>{
                     const { modalProductOpen, closeProductModal, updateProduct, addProduct } = value;
                     const { _id, product, price, edit ,category} = value.modalProduct;
+                    this.category = category;
                     if(!modalProductOpen){
                         return null
                     }else{
@@ -44,7 +48,9 @@ export default class ModalProduct extends Component {
                                         <p className="text-muted">Category: 
                                             <select id="selectCategory" defaultValue={edit?category:'DEFAULT'} onChange={(e)=>
                                                 {
-                                                   this.updateCategory(e); 
+                                                //    this.updateCategory(e); 
+                                                this.category = e.target.value;
+
                                                 }
                                             }>
                                                 
@@ -71,15 +77,14 @@ export default class ModalProduct extends Component {
                                             {edit ? 
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.state.foodCategory)
+                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.category)
                                                     }}>
                                                     Update
                                                 </button>
                                             :
                                                 <button className="product_button"
                                                     onClick={() => {
-                                                        console.log(this.state)
-                                                        addProduct(this.foodName.value,this.foodPrice.value, this.state.foodCategory)
+                                                        addProduct(this.foodName.value,this.foodPrice.value, this.category)
                                                     }}>
                                                     Add
                                                 </button>

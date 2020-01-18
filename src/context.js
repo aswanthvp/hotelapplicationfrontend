@@ -17,28 +17,13 @@ class FoodProvider extends Component {
     constructor(props){
         super(props);
         this.state = {
-            // productlist : productlist,
-            // modalProductOpen : false,
-            // modalProduct : {},
-            // foodName : "",
-            // foodPrice : "",
-            // foodCategory : foodCategory,
-            // foodCategoryDisplay : "All",
-            // deleteCategory : false,
-            // tableList : tableList,
-            // tableOrder : tableOrder,
-            // tableItem : {},
-            // orderDetails : orderDetails,
-            // foodStatus : foodStatus,
-            // modalTableOpen : true
-
-            ////////////////////////////////
             productlist : [],
             modalProductOpen : false,
             modalProduct : {},
             foodName : "",
             foodPrice : "",
             tableName : "",
+            category : "",
             foodCategory : ['All'],
             foodCategoryDisplay : "All",
             deleteCategory : false,
