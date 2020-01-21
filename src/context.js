@@ -5,8 +5,8 @@ import axios from "axios";
 import { foodStatus }  from './data'
 
 const FoodContext = React.createContext();
-const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
-// const backendURL = 'http://localhost:3030/';
+// const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
+const backendURL = 'http://localhost:3030/';
 
 //Provide
 //Consumer
@@ -254,43 +254,51 @@ class FoodProvider extends Component {
 
     decrementFoodCount = (food) =>{
         var tableitem = this.state.tableItem;
-        var orders = [...tableitem.orders];
-        var orderslist = [...this.state.orderDetails];
         var tablename = tableitem.table;
+        var temptable = {table:tablename,food:food}
 
-        var foodcheck = orders.filter((item) => {
-            return item.item === food
-        })
-        
-
-
-        var ordercheck = orderslist.find((item) =>{
-            return item.food === food && item.table === tablename && item.status === "Placed"
-        })
-        if(ordercheck){
-            const index = orderslist.indexOf(ordercheck);
-           
-            if(ordercheck.count >1){
-                ordercheck.count = ordercheck.count - 1;
-                orderslist[index] = ordercheck;
+        axios({
+            url:backendURL+`tableorders/decrementfood`,
+            method:"post",
+            data: temptable
+        }).then(res => {
+            if(res.data.result === 'ok'){
+                this.gettableOrder(tablename);
+                this.getCurrentOrders();
             }else{
-                orderslist.splice(index, 1) 
+                alert(res.data.data)
             }
-            
-            foodcheck[0]["count"]--;
-            tableitem.orders = orders;
-            this.setState(() =>{
-                return{
-                    tableItem : tableitem,
-                    orderDetails : orderslist
-                }
-            })
-        }else{
-            alert("Can't cancel.. Already started preparing")
-        }
+        }).catch(error => {
+            alert("Error occured while adding more")
+        })
     }
 
-    removeFood = (food) =>{
+    removeFood = (food) => {
+        var tableitem = this.state.tableItem;
+        var tablename = tableitem.table;
+        var temptable = {table:tablename,food:food}
+
+        axios({
+            url:backendURL+`tableorders/deletefood`,
+            method:"post",
+            data: temptable
+        }).then(res => {
+            if(res.data.result === 'ok'){
+                this.gettableOrder(tablename);
+                this.getCurrentOrders();
+            }else if(res.data.result === "ok_partial"){
+                
+            }else{
+                alert(res.data.data)
+            }
+        }).catch(error => {
+            alert("Error occured while adding more")
+        })
+
+    }
+
+
+    removeFood_old = (food) =>{
         var tableitem = this.state.tableItem;
         var orders = [...tableitem.orders];
         var orderslist = [...this.state.orderDetails];
@@ -647,38 +655,52 @@ class FoodProvider extends Component {
     }
 
     orderStatusChange = (data) =>{
-        var orders = [...this.state.orderDetails]
         var table = data[0]
         var food = data[1]
         var count = data[2]
         var status = data[3]
-        var order = orders.find((item) =>{
-            return item.table === table && item.food === food && item.count === count && item.status === status
-        }) 
-        //  const index = orders.indexOf(order);
-        var tempstatus
-        switch (status) {
-            case "Placed":
-                tempstatus = "Preparing"
-                break;
-            case "Preparing":
-                tempstatus = "Ready"
-                break;
-            default:
-                tempstatus = "Served"
-                break;
-        }
-        // if(tempstatus === "Served"){
-        //     orders.splice(index, 1) 
-        // }else{
-            order.status = tempstatus;
-        // }
-        
-        this.setState(() =>{
-            return{
-                orderDetails : orders
+        var temp ={table:table,food:food,count:count,status:status};
+        axios({
+            url:backendURL+"orders/orderstatuschange",
+            method:"post",
+            data:temp
+        }).then(response => {
+            if(response.data.result === 'ok'){
+                this.getCurrentOrders();
+            }else{
+                alert(response.data.data)
             }
+        }).catch(error => {
+            alert("Error updating the status")
+            console.log(error);
         })
+        // var order = orders.find((item) =>{
+        //     return item.table === table && item.food === food && item.count === count && item.status === status
+        // }) 
+        // //  const index = orders.indexOf(order);
+        // var tempstatus
+        // switch (status) {
+        //     case "Placed":
+        //         tempstatus = "Preparing"
+        //         break;
+        //     case "Preparing":
+        //         tempstatus = "Ready"
+        //         break;
+        //     default:
+        //         tempstatus = "Served"
+        //         break;
+        // }
+        // // if(tempstatus === "Served"){
+        // //     orders.splice(index, 1) 
+        // // }else{
+        //     order.status = tempstatus;
+        // // }
+        
+        // this.setState(() =>{
+        //     return{
+        //         orderDetails : orders
+        //     }
+        // })
     }
 
     calTotal = () =>{
@@ -703,38 +725,41 @@ class FoodProvider extends Component {
     }
 
     billPaid = () => {
-        var orders = [...this.state.orderDetails]
-        var tableorders = [...this.state.tableOrder]
-        var tablelist = [...this.state.tableList]
         var tableitem = this.state.tableItem;
         var table = tableitem.table;
+        // axios({
+        //     url:backendURL+"table/freetable",
+        //     method:"post",
+        //     data:{table:table}
+        // }).then(resp => {
 
-        var tableorder = tableorders.find((item) =>{
-            return item.table === table
-        });
-        var index = tableorders.indexOf(tableorder);
-        tableorders.splice(index,1);
+        // }).catch(error => {
+        //     console.log(error);
+        //     alert("Error in updating the details")
+        // })
 
-        for (var i in orders){
-            if(orders[i].table === table)
-            orders[i].status = "Served"
-        }
-
-        var tablestatus = tablelist.find((item) =>{
-            return item.table === table
-        })
-        var indextable = tablelist.indexOf(tablestatus)
-        tablelist[indextable].occupied = false
-
-        this.setState(() =>{
-            return{
-                orderDetails : orders,
-                tableList : tablelist,
-                tableOrder : tableorders,
-                tableItem : {}
+        axios({
+            url:backendURL+`table/freetable`,
+            method:"post",
+            data:{table:table}
+        }).then(response => {
+            if(response.data.result==="ok"){
+                console.log(",asjbd")
+                this.gettables();
+                this.getCurrentOrders();
+                this.setState(() =>{
+                    return{
+                        tableItem : {}
+                    }
+                });
+            }else{
+                console.log("Error occure");
+                console.log(response.data.data);
+                alert("Coudnt update !")
             }
-        })
-        // return  <Redirect  to="/" />
+        }).catch(err=>{
+            console.log(err)
+        });
     }
 
     render() {
