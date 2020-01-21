@@ -5,8 +5,8 @@ import axios from "axios";
 import { foodStatus }  from './data'
 
 const FoodContext = React.createContext();
-// const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
-const backendURL = 'http://localhost:3030/';
+const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
+// const backendURL = 'http://localhost:3030/';
 
 //Provide
 //Consumer
