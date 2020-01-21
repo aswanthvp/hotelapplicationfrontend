@@ -15,7 +15,7 @@ export default class Product extends Component {
                             <div>
                                 <div className="row">
                                     <ProductCategory value = {value}></ProductCategory>
-                                    <div className="col-12 mx-auto col-md-4 col-lg-7 my-3">
+                                    <div className="col-9 mx-auto col-md-9 col-lg-9 my-3">
                                         <div className="row container">
                                             <div className="product_menu_selected">{value.foodCategoryDisplay} Menu  </div>
                                             <div className="col-2 mx-auto">

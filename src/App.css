@@ -23,6 +23,10 @@ p,select,h6,button{
   background-color: #2bbbad !important ;
   color: aliceblue !important ;
   align-self: center;
+  width: 100%;
+}
+.add_category_input{
+  width: 100%;
 }
 .text-title-second{
   color:var(--mainBlue) !important;
@@ -83,6 +87,7 @@ p,select,h6,button{
   margin:5px;
   border-radius:5px;
   padding:8px;
+  width: 100%;
 }
 .product_category_add{
   background-color: var(--lightBlue);

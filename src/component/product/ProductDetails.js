@@ -5,7 +5,7 @@ export default class ProductDetails extends Component {
         const value = this.props.value;
         const { _id,product,price,available } = this.props.product;
         return (
-            <div className="col-10 mx-auto my-1 text-center text-title">
+            <div className="col-12 mx-auto my-1 text-center text-title">
                 <div className="card">
                     <div className="row">
                         <div className="col-3 text-center text-capitalize">{product}</div>
