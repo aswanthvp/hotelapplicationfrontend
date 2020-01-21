@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import axios from "axios";
-import { productlist ,foodCategory, tableList, tableOrder, orderDetails, foodStatus }  from './data'
+import { foodStatus }  from './data'
 
 const FoodContext = React.createContext();
 const backendURL = 'https://hotelapplicationbackend.herokuapp.com/';
-const backendURL1 = 'https://hotelapplicationbackend.herokuapp.com/';
-const backendURL2 = 'http://localhost:3030/';
+// const backendURL = 'http://localhost:3030/';
 
 //Provide
 //Consumer
@@ -37,8 +36,9 @@ class FoodProvider extends Component {
         }
     }
     componentDidMount() {
-        this.gettables();
         this.gettableOrder();
+        this.getCurrentOrders();
+        this.gettables();
         this.getProduct();
         this.getCategory();
     }
@@ -150,17 +150,28 @@ class FoodProvider extends Component {
     }
 
     //Function to get the table orders details
-    gettableOrder = () => {
+    gettableOrder = (table = false) => {
         axios({
             url:backendURL+`tableorders/getorders`,
             method:"post"
         }).then(response => {
             if(response.data.result==="ok"){
-                this.setState(() => {
-                    return {
-                        tableOrder: [...response.data.data]
-                    };
-                });
+                if (table === false){
+                    this.setState(() => {
+                        return {
+                            tableOrder: [...response.data.data]
+                        };
+                    });
+                }else{
+                    let tableitem = response.data.data.find(item =>item.table === table);
+                    this.setState(() => {
+                        return {
+                            tableOrder : [...response.data.data],
+                            tableItem : tableitem
+                        };
+                    });
+                }
+                
             }
         }).catch(err=>{
             console.log(err)
@@ -177,7 +188,7 @@ class FoodProvider extends Component {
         }).then(response => {
             if(response.data.result==="ok"){
                 this.gettables();
-                this.gettableOrder();
+                this.gettableOrder(table);
             }
         }).catch(err=>{
             console.log(err)
@@ -186,12 +197,161 @@ class FoodProvider extends Component {
 
     //Function to assign table order details in table list 
     tableContentItem = (table) => {
+        console.log(table)
         const tableitem = this.state.tableOrder.find(item =>item.table === table);
+        console.log(tableitem)
         this.setState(() =>{
             return{
                 tableItem : tableitem
             }
         });
+    }
+
+    //Function to add the food in to the table
+    updateFoodSelected = (food) => {
+        if(food !== ""){
+            var tableitem = this.state.tableItem;
+            var tablename = tableitem.table
+            var temptable = {table:tablename,food:food}
+            axios({
+                url:backendURL+`tableorders/addfood`,
+                method:"post",
+                data: temptable
+            }).then(res => {
+                if(res.data.result === 'ok'){
+                    this.gettableOrder(tablename);
+                    this.getCurrentOrders();
+                }else{
+                    alert(res.data.data)
+                }
+            }).catch(error => {
+                alert("Error occured while adding product");
+                console.log(error)
+            })
+        }
+    }
+
+    
+    incrementFoodCount = (food) =>{
+        var tableitem = this.state.tableItem;
+        var tablename = tableitem.table;
+        var temptable = {table:tablename,food:food}
+        axios({
+            url:backendURL+`tableorders/incrementfood`,
+            method:"post",
+            data: temptable
+        }).then(res => {
+            if(res.data.result === 'ok'){
+                this.gettableOrder(tablename);
+                this.getCurrentOrders();
+            }else{
+                alert(res.data.data)
+            }
+        }).catch(error => {
+            alert("Error occured while adding more")
+        })
+    }
+
+    decrementFoodCount = (food) =>{
+        var tableitem = this.state.tableItem;
+        var orders = [...tableitem.orders];
+        var orderslist = [...this.state.orderDetails];
+        var tablename = tableitem.table;
+
+        var foodcheck = orders.filter((item) => {
+            return item.item === food
+        })
+        
+
+
+        var ordercheck = orderslist.find((item) =>{
+            return item.food === food && item.table === tablename && item.status === "Placed"
+        })
+        if(ordercheck){
+            const index = orderslist.indexOf(ordercheck);
+           
+            if(ordercheck.count >1){
+                ordercheck.count = ordercheck.count - 1;
+                orderslist[index] = ordercheck;
+            }else{
+                orderslist.splice(index, 1) 
+            }
+            
+            foodcheck[0]["count"]--;
+            tableitem.orders = orders;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem,
+                    orderDetails : orderslist
+                }
+            })
+        }else{
+            alert("Can't cancel.. Already started preparing")
+        }
+    }
+
+    removeFood = (food) =>{
+        var tableitem = this.state.tableItem;
+        var orders = [...tableitem.orders];
+        var orderslist = [...this.state.orderDetails];
+        var tablename = tableitem.table;
+
+        var ordercheckplaced = orderslist.find((item) =>{
+            return item.food === food && item.table === tablename && item.status === "Placed"
+        })
+        var ordercheck = orderslist.filter((item) =>{
+            return item.food === food && item.table === tablename && item.status !== "Placed"
+        })
+        if(ordercheck.length === 0){
+            const index = orderslist.indexOf(ordercheckplaced);
+            orderslist.splice(index, 1);
+            var foodcheck = orders.filter((item) => {
+                return item.item !== food
+            })
+            tableitem.orders = foodcheck;
+            this.setState(() =>{
+                return{
+                    tableItem : tableitem,
+                    orderDetails : orderslist
+                }
+            })
+        }else{
+            if(!ordercheckplaced){
+                alert("cant cancel the orders")
+            }else{
+                console.log(ordercheckplaced)
+                var count = ordercheckplaced.count
+                confirmAlert({
+                    title: 'Cancel partial..',
+                    message: 'can cancel '+ordercheckplaced.count+' item',
+                    buttons: [
+                      {
+                        label: 'Yes',
+                        onClick: () => {
+                            const index = orderslist.indexOf(ordercheckplaced);
+                            orderslist.splice(index, 1);
+                            var foodcheck = orders.find((item) => {
+                                return item.item === food
+                            })
+                            const indexfoodtable = orders.indexOf(foodcheck);
+                            orders[indexfoodtable].count = orders[indexfoodtable].count - count
+                            tableitem.orders = orders;
+                            this.setState(() =>{
+                                return{
+                                    tableItem : tableitem,
+                                    orderDetails : orderslist
+                                }
+                            })
+                        }
+                      },
+                      {
+                        label: 'No',
+                        onClick: () => console.log("canceled the partial delete")
+                      }
+                    ]
+                  })
+            }
+        }
     }
 
     //Function to free the table 
@@ -309,7 +469,7 @@ class FoodProvider extends Component {
         });
     }
 
-    //Function to chnage the product availability
+    //Function to change the product availability
     handleProductAvailability = (id) => {
         let tempFood ={id:id}
         axios({
@@ -460,210 +620,30 @@ class FoodProvider extends Component {
     };
 
 
-    updateFoodSelected = (food) =>{
-        if(food !== ""){
-            var tableitem = this.state.tableItem;
-            var orderslist = [...this.state.orderDetails];  
-            var id = orderslist.length + 1
-            var tablename = tableitem.table
+    //Function to be handled in orders page
 
-            if(tableitem.hasOwnProperty("orders")){
-                var orders = [...tableitem.orders];
-                var foodcheck = orders.filter((item) => {
-                    return item.item === food
-                })
-                if(foodcheck.length === 0){
-                    orders.push({
-                        item : food,
-                        count : 1
-                    })
-                    orderslist.push({
-                        _id : id,
-                        table : tablename,
-                        food : food,
-                        count : 1,
-                        status : "Placed"
-                    })
-                }else{
-                    foodcheck[0]["count"]++;
-                    var ordercheck = orderslist.find((item) =>{
-                        return item.food === food && item.table === tablename && item.status === "Placed"
-                    })
-                    if(ordercheck){
-                        const index = orderslist.indexOf(ordercheck);
-                        ordercheck.count = ordercheck.count + 1;
-                        orderslist[index] = ordercheck;
-                    }else{
-                        orderslist.push({
-                            _id : id,
-                            table : tablename,
-                            food : food,
-                            count : 1,
-                            status : "Placed"
-                        })
-                    }
-                }
-                tableitem.orders = orders;
-                console.log(orderslist)
-                this.setState(() =>{
-                    return{
-                        tableItem : tableitem,
-                        orderDetails : orderslist
-                    }
-                })
-            }
-        }
-    }
-
-    incrementFoodCount = (food) =>{
-        var tableitem = this.state.tableItem;
-        var productlist = [...this.state.productlist]
-        var orderslist = [...this.state.orderDetails];
-        var tablename = tableitem.table;
-        var id = tableitem._id
-        var foodavailability = productlist.filter((item) =>{
-            return item.product === food
-        })
-        if(foodavailability[0].available){
-            var orders = [...tableitem.orders];
-            var foodcheck = orders.filter((item) => {
-                return item.item === food
-            })
-            foodcheck[0]["count"]++;
-
-            var ordercheck = orderslist.find((item) =>{
-                return item.food === food && item.table === tablename && item.status === "Placed"
-            })
-            if(ordercheck){
-                const index = orderslist.indexOf(ordercheck);
-                ordercheck.count = ordercheck.count + 1;
-                orderslist[index] = ordercheck;
-            }else{
-                orderslist.push({
-                    _id : id,
-                    table : tablename,
-                    food : food,
-                    count : 1,
-                    status : "Placed"
-                })
-            }
-
-
-            tableitem.orders = orders;
-            this.setState(() =>{
-                return{
-                    tableItem : tableitem,
-                    orderDetails : orderslist
-                }
-            })
-        }else{
-            alert("Food Not Available any more....")
-            return  null
-        }
-    }
-
-    decrementFoodCount = (food) =>{
-        var tableitem = this.state.tableItem;
-        var orders = [...tableitem.orders];
-        var orderslist = [...this.state.orderDetails];
-        var tablename = tableitem.table;
-
-        var foodcheck = orders.filter((item) => {
-            return item.item === food
-        })
-        
-
-
-        var ordercheck = orderslist.find((item) =>{
-            return item.food === food && item.table === tablename && item.status === "Placed"
-        })
-        if(ordercheck){
-            const index = orderslist.indexOf(ordercheck);
-           
-            if(ordercheck.count >1){
-                ordercheck.count = ordercheck.count - 1;
-                orderslist[index] = ordercheck;
-            }else{
-                orderslist.splice(index, 1) 
-            }
-            
-            foodcheck[0]["count"]--;
-            tableitem.orders = orders;
-            this.setState(() =>{
-                return{
-                    tableItem : tableitem,
-                    orderDetails : orderslist
-                }
-            })
-        }else{
-            alert("Can't cancel.. Already started preparing")
-        }
-    }
-
-    removeFood = (food) =>{
-        var tableitem = this.state.tableItem;
-        var orders = [...tableitem.orders];
-        var orderslist = [...this.state.orderDetails];
-        var tablename = tableitem.table;
-
-        var ordercheckplaced = orderslist.find((item) =>{
-            return item.food === food && item.table === tablename && item.status === "Placed"
-        })
-        var ordercheck = orderslist.filter((item) =>{
-            return item.food === food && item.table === tablename && item.status !== "Placed"
-        })
-        if(ordercheck.length === 0){
-            const index = orderslist.indexOf(ordercheckplaced);
-            orderslist.splice(index, 1);
-            var foodcheck = orders.filter((item) => {
-                return item.item !== food
-            })
-            tableitem.orders = foodcheck;
-            this.setState(() =>{
-                return{
-                    tableItem : tableitem,
-                    orderDetails : orderslist
-                }
-            })
-        }else{
-            if(!ordercheckplaced){
-                alert("cant cancel the orders")
-            }else{
-                console.log(ordercheckplaced)
-                var count = ordercheckplaced.count
-                confirmAlert({
-                    title: 'Cancel partial..',
-                    message: 'can cancel '+ordercheckplaced.count+' item',
-                    buttons: [
-                      {
-                        label: 'Yes',
-                        onClick: () => {
-                            const index = orderslist.indexOf(ordercheckplaced);
-                            orderslist.splice(index, 1);
-                            var foodcheck = orders.find((item) => {
-                                return item.item === food
-                            })
-                            const indexfoodtable = orders.indexOf(foodcheck);
-                            orders[indexfoodtable].count = orders[indexfoodtable].count - count
-                            tableitem.orders = orders;
-                            this.setState(() =>{
-                                return{
-                                    tableItem : tableitem,
-                                    orderDetails : orderslist
-                                }
-                            })
+    //Function to get the orders details from the DB
+    getCurrentOrders = () => {
+        try {
+            axios({
+                url:backendURL+"orders/getorders",
+                method:"post"
+            }).then(res => {
+                if(res.data.result === 'ok'){
+                    this.setState(() =>{
+                        return{
+                            orderDetails:[...res.data.data]
                         }
-                      },
-                      {
-                        label: 'No',
-                        onClick: () => console.log("canceled the partial delete")
-                      }
-                    ]
-                  })
-            }
+                    });
+                }else{
+                    alert("Error ocuured while fetching data from DB")
+                }
+            }).catch(error => {
+                alert(error)
+            });
+        } catch (error) {
+            
         }
-
-       
     }
 
     orderStatusChange = (data) =>{
@@ -675,7 +655,7 @@ class FoodProvider extends Component {
         var order = orders.find((item) =>{
             return item.table === table && item.food === food && item.count === count && item.status === status
         }) 
-        const index = orders.indexOf(order);
+        //  const index = orders.indexOf(order);
         var tempstatus
         switch (status) {
             case "Placed":
