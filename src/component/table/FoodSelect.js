@@ -28,11 +28,11 @@ export default class FoodSelect extends Component {
         const foodcategory = this.props.value.foodCategory;
         const updateFoodSelected = this.props.value.updateFoodSelected;
         return (
-            <div className="col-9 mx-auto col-md-4 col-lg-4 my-3 maincontainer py-4">
+            <div className="col-lg-3 col-md-3 col-sm-12 mx-auto  mr-3 maincontainer py-4">
                  <h6 className="text-center">Add food to the table</h6>
                  
                  <center>
-                     <select defaultValue='All' className="mr-4" onChange={(e)=>
+                     <select defaultValue='All' className="m-2" onChange={(e)=>
                                                 {
                                                    this.updateCategory(e); 
                                                 } }>
@@ -44,7 +44,7 @@ export default class FoodSelect extends Component {
                             })
                         }
                      </select>
-                    <select id="foodselect" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
+                    <select id="foodselect" className="m-2" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
                         <option value='DEFAULT' disabled>Select the food</option>             
                         {
                         foods.map((item)=>{

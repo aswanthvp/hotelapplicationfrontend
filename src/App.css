@@ -28,6 +28,11 @@ p,select,h6,button{
 .add_category_input{
   width: 100%;
 }
+
+
+#foodselect{
+  width: 100%;
+}
 .text-title-second{
   color:var(--mainBlue) !important;
 }

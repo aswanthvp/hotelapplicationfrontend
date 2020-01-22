@@ -11,7 +11,7 @@ export default class ProductCategory extends Component {
     render() {
         const value = this.props.value;
         return (
-            <div className="col-3 mx-auto col-md-3 col-lg-3 my-3 product_category">
+            <div className="col-md-3 col-lg-3 col-sm-3 col-xs-12 my-3 mx-auto py-4 product_category">
                 <h5 className="mx-auto text-center">Food category</h5>
                 {
                     value.foodCategory.map((item) =>{
