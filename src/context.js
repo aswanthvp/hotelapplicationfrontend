@@ -92,9 +92,13 @@ class FoodProvider extends Component {
             data: temptable
         }).then(response => {
             if(response.data.result==="ok"){
-                this.gettables();
+                // this.gettables();
+                
                 this.setState(() => {
-                    return { modalTableOpen: false };
+                    return { 
+                        modalTableOpen: false,
+                        tableList: [...response.data.data.tablelist]
+                    };
                 });
             }
         }).catch(err=>{
@@ -112,9 +116,12 @@ class FoodProvider extends Component {
             data: temptable
         }).then(response => {
             if(response.data.result==="ok"){
-                this.gettables();
+                // this.gettables();
                 this.setState(() => {
-                    return { modalTableOpen: false };
+                    return { 
+                        modalTableOpen: false,
+                        tableList: [...response.data.data.tablelist]
+                    };
                 });
             }else if(response.data.result === "failed"){
                 alert("able name already there");
@@ -135,9 +142,12 @@ class FoodProvider extends Component {
             data: temptable
         }).then(response => {
             if(response.data.result==="ok"){
-                this.gettables();
+                // this.gettables();
                 this.setState(() => {
-                    return { modalTableOpen: false };
+                    return { 
+                        modalTableOpen: false,
+                        tableList: [...response.data.data.tablelist]
+                    };
                 });
             }else if(response.data.result === "failed"){
                 alert("able name already there");
@@ -163,11 +173,11 @@ class FoodProvider extends Component {
                         };
                     });
                 }else{
-                    let tableitem = response.data.data.find(item =>item.table === table);
+                    // let tableitem = response.data.data.find(item =>item.table === table);
                     this.setState(() => {
                         return {
                             tableOrder : [...response.data.data],
-                            tableItem : tableitem
+                            tableItem : response.data.data.find(item =>item.table === table)
                         };
                     });
                 }
@@ -187,19 +197,24 @@ class FoodProvider extends Component {
             data: temptable
         }).then(response => {
             if(response.data.result==="ok"){
-                this.gettables();
-                this.gettableOrder(table);
+                // this.gettables();
+                // this.(table);
+                this.setState(() => {
+                    return {
+                        tableOrder : [...response.data.data.tableorders],
+                        tableList: [...response.data.data.tablelist],
+                        tableItem : response.data.data.tablelist.filter(item => {return item.table === table})
+                    };
+                });
             }
         }).catch(err=>{
-            console.log(err)
+            console.log(err);
         });
     }
 
     //Function to assign table order details in table list 
     tableContentItem = (table) => {
-        console.log(table)
         const tableitem = this.state.tableOrder.find(item =>item.table === table);
-        console.log(tableitem)
         this.setState(() =>{
             return{
                 tableItem : tableitem
@@ -217,12 +232,20 @@ class FoodProvider extends Component {
                 url:backendURL+`tableorders/addfood`,
                 method:"post",
                 data: temptable
-            }).then(res => {
-                if(res.data.result === 'ok'){
-                    this.gettableOrder(tablename);
-                    this.getCurrentOrders();
+            }).then(response => {
+                if(response.data.result === 'ok'){
+                    // this.gettableOrder(tablename);
+                    // this.getCurrentOrders();
+                    this.setState(() => {
+                        return {
+                            tableOrder : [...response.data.data.tableorders],
+                            orderDetails : [...response.data.data.orders],
+                            tableItem : response.data.data.tableorders.find(item => {return item.table === tablename})
+                        };
+                    });
                 }else{
-                    alert(res.data.data)
+                    console.log(response.data)
+                    alert(response.data.data)
                 }
             }).catch(error => {
                 alert("Error occured while adding product");
@@ -240,12 +263,19 @@ class FoodProvider extends Component {
             url:backendURL+`tableorders/incrementfood`,
             method:"post",
             data: temptable
-        }).then(res => {
-            if(res.data.result === 'ok'){
-                this.gettableOrder(tablename);
-                this.getCurrentOrders();
+        }).then(response => {
+            if(response.data.result === 'ok'){
+                // this.gettableOrder(tablename);
+                // this.getCurrentOrders();
+                this.setState(() => {
+                    return {
+                        tableOrder : [...response.data.data.tableorders],
+                        orderDetails : [...response.data.data.orders],
+                        tableItem : response.data.data.tableorders.find(item => {return item.table === tablename})
+                    };
+                });
             }else{
-                alert(res.data.data)
+                alert(response.data.data)
             }
         }).catch(error => {
             alert("Error occured while adding more")
@@ -261,12 +291,17 @@ class FoodProvider extends Component {
             url:backendURL+`tableorders/decrementfood`,
             method:"post",
             data: temptable
-        }).then(res => {
-            if(res.data.result === 'ok'){
-                this.gettableOrder(tablename);
-                this.getCurrentOrders();
+        }).then(response => {
+            if(response.data.result === 'ok'){
+                this.setState(() => {
+                    return {
+                        tableOrder : [...response.data.data.tableorders],
+                        orderDetails : [...response.data.data.orders],
+                        tableItem : response.data.data.tableorders.find(item => {return item.table === tablename})
+                    };
+                });
             }else{
-                alert(res.data.data)
+                alert(response.data.data)
             }
         }).catch(error => {
             alert("Error occured while adding more")
@@ -282,14 +317,22 @@ class FoodProvider extends Component {
             url:backendURL+`tableorders/deletefood`,
             method:"post",
             data: temptable
-        }).then(res => {
-            if(res.data.result === 'ok'){
-                this.gettableOrder(tablename);
-                this.getCurrentOrders();
-            }else if(res.data.result === "ok_partial"){
+        }).then(response => {
+            if(response.data.result === 'ok'){
+                // this.gettableOrder(tablename);
+                // this.getCurrentOrders();
+                this.setState(() => {
+                    return {
+                        tableOrder : [...response.data.data.tableorders],
+                        orderDetails : [...response.data.data.orders],
+                        tableItem : response.data.data.tableorders.find(item => {return item.table === tablename})
+                    };
+                });
+            }else if(response.data.result === "ok_partial"){
                 
             }else{
-                alert(res.data.data)
+                console.log(response.data)
+                alert(response.data.data)
             }
         }).catch(error => {
             alert("Error occured while adding more")
@@ -327,7 +370,6 @@ class FoodProvider extends Component {
             if(!ordercheckplaced){
                 alert("cant cancel the orders")
             }else{
-                console.log(ordercheckplaced)
                 var count = ordercheckplaced.count
                 confirmAlert({
                     title: 'Cancel partial..',
@@ -372,9 +414,10 @@ class FoodProvider extends Component {
             data: temptable
         }).then(response => {
             if(response.data.result==="ok"){
-                this.gettables();
+                // this.gettables();
                 this.setState(() =>{
                     return{
+                        tableList: [...response.data.data.tablelist],
                         tableItem : {}
                     }
                 });
@@ -434,9 +477,10 @@ class FoodProvider extends Component {
                 data : tempFood
             }).then(response => {
                 if(response.data.result==="ok"){
-                    this.getProduct();
+                    // this.getProduct();
                     this.setState(() => {
                         return {
+                            productlist: [...response.data.data.product],
                             modalProductOpen: false  
                         };
                     });
@@ -461,9 +505,10 @@ class FoodProvider extends Component {
             data : tempFood
         }).then(response => {
             if(response.data.result==="ok"){
-                this.getProduct();
+                // this.getProduct();
                 this.setState(() => {
                     return {
+                        productlist: [...response.data.data.product],
                         modalProductOpen: false  
                     };
                 });
@@ -486,9 +531,10 @@ class FoodProvider extends Component {
             data : tempFood
         }).then(response => {
             if(response.data.result==="ok"){
-                this.getProduct();
+                // this.getProduct();
                 this.setState(() => {
                     return {
+                        productlist: [...response.data.data.product],
                         modalProductOpen: false  
                     };
                 });
@@ -581,7 +627,12 @@ class FoodProvider extends Component {
                 data: tempdata
             }).then(res =>{
                 if(res.data.result === 'ok'){
-                    this.getCategory();
+                    // this.getCategory();
+                    this.setState(() => {
+                        return{
+                            foodCategory : [...res.data.data.foodcategory]
+                        }
+                    })
                 }else{
                     alert(res.data.data);
                 }
@@ -604,7 +655,12 @@ class FoodProvider extends Component {
                 data:tempdata
             }).then(res => {
                 if(res.data.result === 'ok'){
-                    this.getCategory();
+                    // this.getCategory();
+                    this.setState(() => {
+                        return{
+                            foodCategory : [...res.data.data.foodcategory]
+                        }
+                    })
                 }else{
                     alert(res.data.data);
                 }
@@ -666,7 +722,13 @@ class FoodProvider extends Component {
             data:temp
         }).then(response => {
             if(response.data.result === 'ok'){
-                this.getCurrentOrders();
+                // this.getCurrentOrders();
+                console.log(response.data.data)
+                this.setState(() =>{
+                    return{
+                        orderDetails:[...response.data.data.orders]
+                    }
+                });
             }else{
                 alert(response.data.data)
             }
@@ -744,17 +806,18 @@ class FoodProvider extends Component {
             data:{table:table}
         }).then(response => {
             if(response.data.result==="ok"){
-                console.log(",asjbd")
-                this.gettables();
-                this.getCurrentOrders();
+                // console.log(",asjbd")
+                // this.gettables();
+                // this.getCurrentOrders();
                 this.setState(() =>{
                     return{
-                        tableItem : {}
+                        tableList:response.data.data.tablelist,
+                        orderDetails:[...response.data.data.orders],
+                        tableItem : {},
                     }
                 });
             }else{
                 console.log("Error occure");
-                console.log(response.data.data);
                 alert("Coudnt update !")
             }
         }).catch(err=>{
