@@ -27,9 +27,10 @@ export default class ProductCategory extends Component {
                     <p className="float_left">Add category</p>
                     <i className="float_right p-1 fas fa-edit" onClick = {()=>{value.productCategoryEdit()}}></i>
                     <p className="text-muted float_none ">category : <input id="foodCategory" className="add_category_input"  type="text" ref={(c) => this.category = c}/></p>
-                    <button className="btn btn-default btn-sm button_add_category" onClick={()=>{value.productCategoryAdd(this.category.value)}}>Add</button>
+                    {/* <button className="btn btn-default btn-sm button_add_category" onClick={()=>{value.productCategoryAdd(this.category.value)}}>Add</button> */}
+                    <button className="btn btn-outline-info my-2 my-sm-0 button_add_category" onClick={()=>{value.productCategoryAdd(this.category.value)}}>Add</button>
                 </div>
-               
+                              
             </div>
         )
     }

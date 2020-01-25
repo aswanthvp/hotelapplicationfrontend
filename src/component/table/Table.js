@@ -54,8 +54,8 @@ export default class Table extends Component {
                             </div>
                             <div className="card-footer">
                                 {occupied?
-                                  <button className="align-self-center button button_occupied btn btn-default btn-sm">Occupied <i className="fa fa-arrow-circle-right button_arrow_color"></i></button>:
-                                  <button className="align-self-center button button_available btn btn-default btn-sm" onClick={()=>value.tableTake(_id,table)}>Available <i className="fa fa fa-arrow-circle-down button_arrow_color_available"></i></button>   
+                                  <Link to="/tablecontent"><button className="btn btn-outline-info button_available btn-sm " onClick={()=>{value.tableContentItem(table)}}> Occupied <i className="fa fa-arrow-circle-right btn-outline-info button_arrow_color"></i> </button> </Link>: 
+                                  <button className="btn btn-outline-success button_available btn-sm " onClick={()=>value.tableTake(_id,table)}> Available <i className="fa fa fa-arrow-circle-down btn-outline-success button_arrow_color_available"></i> </button> 
                                 }
                             </div>
                           </div>
@@ -162,14 +162,15 @@ const TableWrapper = styled.div`
     background-color:#ffffff!important;
   }
   .button_available{
-    background-color: #4CAF50;     
+    width:100%
+    // background-color: #4CAF50;     
   }
-  .button_arrow_color{
+  .button_arrow_color_available{
     color:#23f34f;
     margin-left: 10%;
   }
-  .button_arrow_color_available{
-    color:#f8f9fa;
+  .button_arrow_color{
+    color:#365d98;
     margin-left:10%;
   }
 `;

@@ -66,28 +66,43 @@ export default class ModalProduct extends Component {
                                         <p className="text-muted">Price: <input id="foodPrice"  type="text" defaultValue = { price } ref={(c) => this.foodPrice = c}/></p>
 
                                         <Link to="/product">
-                                            <button className="product_button"   
+                                            {/* <button className="product_button"   
                                                 onClick={ () => { 
                                                     closeProductModal() 
+                                                }}> 
+                                                Cancel 
+                                            </button> */}
+                                            <button className="btn btn-outline-success my-2 my-sm-0 m-1" onClick={ () => { 
+                                                   closeProductModal() 
                                                 }}> 
                                                 Cancel 
                                             </button>
                                         </Link>
                                         <Link to="/product">
                                             {edit ? 
-                                                <button className="product_button"
-                                                    onClick={() => {
-                                                        updateProduct(_id, this.foodName.value,this.foodPrice.value,this.category)
-                                                    }}>
-                                                    Update
-                                                </button>
+                                                // <button className="product_button"
+                                                //     onClick={() => {
+                                                //         updateProduct(_id, this.foodName.value,this.foodPrice.value,this.category)
+                                                //     }}>
+                                                //     Update
+                                                // </button>
+                                                <button className="btn btn-outline-success my-2 my-sm-0 m-1" onClick={ () => { 
+                                                    updateProduct(_id, this.foodName.value,this.foodPrice.value,this.category)
+                                                 }}> 
+                                                 Update 
+                                             </button>
                                             :
-                                                <button className="product_button"
-                                                    onClick={() => {
-                                                        addProduct(this.foodName.value,this.foodPrice.value, this.category)
-                                                    }}>
-                                                    Add
-                                                </button>
+                                                // <button className="product_button"
+                                                //     onClick={() => {
+                                                //         addProduct(this.foodName.value,this.foodPrice.value, this.category)
+                                                //     }}>
+                                                //     Add
+                                                // </button>
+                                                <button className="btn btn-outline-success my-2 my-sm-0 m-1" onClick={ () => { 
+                                                    addProduct(this.foodName.value,this.foodPrice.value, this.category)
+                                                 }}> 
+                                                 Add 
+                                             </button>
                                             }
                                         </Link>
                                         </div>

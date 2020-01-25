@@ -36,10 +36,12 @@ export default class OrdersList extends Component {
                             value.tableItem.orders?
                                 value.tableItem.orders.length>0?
                                     <Link to="/">
-                                        <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.billPaid()}} >Bill paid</button>
+                                        {/* <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.billPaid()}} >Bill paid</button> */}
+                                        <button className="btn btn-outline-info my-2 my-sm-0 button_add_category" onClick={() =>{value.billPaid()}} >Bill paid</button>
                                     </Link>
                                 :   <Link to="/">
-                                        <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.freeTable()}} >Free Table</button>
+                                    <button className="btn btn-outline-info my-2 my-sm-0 button_add_category" onClick={() =>{value.freeTable()}} >Free Table</button>
+                                        {/* <button className="my-3 btn btn-default btn-sm button_add_category float-right" onClick={() =>{value.freeTable()}} >Free Table</button> */}
                                     </Link>
                             : null
                         }

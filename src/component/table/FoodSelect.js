@@ -28,7 +28,8 @@ export default class FoodSelect extends Component {
         const foodcategory = this.props.value.foodCategory;
         const updateFoodSelected = this.props.value.updateFoodSelected;
         return (
-            <div className="col-lg-3 col-md-3 col-sm-12 mx-auto  mr-3 maincontainer py-4">
+            <div className="col-lg-3 col-md-3 col-sm-12 mx-auto  mr-3 py-4">
+                <div className=" p-4 maincontainer">
                  <h6 className="text-center">Add food to the table</h6>
                  
                  <center>
@@ -44,7 +45,7 @@ export default class FoodSelect extends Component {
                             })
                         }
                      </select>
-                    <select id="foodselect" className="m-2" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
+                    <select id="foodselect" className="my-2" defaultValue='DEFAULT' onChange={(e)=>{this.updateFoodSelected(e);}}>
                         <option value='DEFAULT' disabled>Select the food</option>             
                         {
                         foods.map((item)=>{
@@ -67,9 +68,10 @@ export default class FoodSelect extends Component {
                     </select>
                  </center>
                  <center>
-                    <button className="my-3 btn btn-default btn-sm button_add_category" onClick = {()=>{ updateFoodSelected(this.state.foodSelected) }}>Add the food</button>
+                    <button className="btn btn-outline-info my-2 my-sm-0 button_add_category" onClick = {()=>{ updateFoodSelected(this.state.foodSelected) }}>Add the food</button>
+                    {/* <button className="my-3 btn btn-default btn-sm button_add_category" onClick = {()=>{ updateFoodSelected(this.state.foodSelected) }}>Add the food</button> */}
                  </center>
-                 
+                 </div>
             </div>
            
         )

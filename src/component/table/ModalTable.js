@@ -30,8 +30,13 @@ export default class ModalTable extends Component {
                                         <h5>{edit ? "Food Edit" :"Add Table"}</h5>
                                         <p className="text-muted">Table name: <input id="tableName"   type="text" defaultValue = { table } ref={(c) => this.tableName = c}/></p>
                                         <Link to="/">
-                                            <button className="product_button"   
+                                            {/* <button className="product_button"   
                                                 onClick={ () => { 
+                                                    closeTableModal() 
+                                                }}> 
+                                                Cancel 
+                                            </button> */}
+                                            <button className="btn btn-outline-success my-2 my-sm-0 m-1" onClick={ () => { 
                                                     closeTableModal() 
                                                 }}> 
                                                 Cancel 
@@ -39,19 +44,25 @@ export default class ModalTable extends Component {
                                         </Link>
                                         <Link to="/">
                                             {edit ? 
-                                                <button className="product_button"
-                                                    onClick={() => {
-                                                        updateTable(this.tableName.value)
-                                                    }}>
-                                                    Update
-                                                </button>
+                                                // <button className="product_button"
+                                                //     onClick={() => {
+                                                //         updateTable(this.tableName.value)
+                                                //     }}>
+                                                //     Update
+                                                // </button>
+                                                <button className="btn btn-outline-success my-2 my-sm-0"onClick={() => {
+                                                    updateTable(this.tableName.value)
+                                                }} >Update</button>
                                             :
-                                                <button className="product_button"
-                                                    onClick={() => {
-                                                        addTable(this.tableName.value)
-                                                    }}>
-                                                    Add
-                                                </button>
+                                                // <button className="product_button"
+                                                //     onClick={() => {
+                                                //         addTable(this.tableName.value)
+                                                //     }}>
+                                                //     Add
+                                                // </button>
+                                                <button className="btn btn-outline-success my-2 my-sm-0"onClick={() => {
+                                                    addTable(this.tableName.value)
+                                                }} >Add</button>
                                             }
                                         </Link>
                                         </div>

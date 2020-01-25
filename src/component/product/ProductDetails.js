@@ -6,7 +6,7 @@ export default class ProductDetails extends Component {
         const { _id,product,price,available } = this.props.product;
         return (
             <div className="col-lg-9 col-md-12 col-sm-12 mx-auto py-1 text-center text-title">
-                <div className="card">
+                <div className="card food_details_card">
                     <div className="row">
                         <div className="col-6 col-lg-3 text-center p-1 text-capitalize">{product}</div>
                         <div className="col-6 col-lg-3 text-center p-1 text-title-second">Rs: {price}</div>
